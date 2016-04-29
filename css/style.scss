@@ -1,0 +1,118 @@
+$lGrey: #b2b2b2;
+$dGrey: #8c8c8c;
+
+
+body{
+	box-sizing: border-box;
+	margin: 0;
+	background-color: rgba(#b8b8b8,0.3);
+}
+#toolbar{
+	position: fixed;
+	width: 100%;
+	background-color: $lGrey;
+
+	.login{
+display: none;
+	}
+	.signUp{
+display: none;
+	}
+	.timer{
+		display: inline-block;
+		margin: 0vw 0.4vw;
+		padding: 0.3vw 1vw;
+		background-color: black;
+		border: 0.1vw solid white;
+		border-radius: 0.7vw;
+		color: red;
+		font-family: Orbitron, sans-serif;
+		font-size: 1.5vw;
+	}
+	.mainTopicTimer{
+		margin-left: 1vw;
+	}
+	.postTimer{
+
+	}
+	.rateTimer{
+
+	}
+	.mainToolbar{
+		display: inline-block;
+		font-size: 2.3vw;
+		color: black;
+		text-decoration: none;
+		background-color: $dGrey;
+		border: 0.1vw solid white;
+		padding: 0.5vw 0.7vw;
+	}
+	.optionsToolbar{
+		position: fixed;
+		top: 0.5vw;
+		right: 1vw;
+		padding: 0.3vw 1vw;
+		display: inline-block;
+		font-size: 1.5vw;
+		text-decoration: none;
+		color: white;
+		background-color: $dGrey;
+		border: 0.2vw solid white;
+		border-radius: 0.7vw;
+	}
+}
+#archiveNav{
+	display: none;
+
+	.archiveButton{
+
+	}
+	.archiveButtonLeft{
+
+	}
+	.archiveButtonRight{
+
+	}
+	.archiveTopic{
+
+	}
+}
+.mainTopicFront{
+display: none;
+}
+.simpleLink{
+display: none;
+}
+.previousDiscussions{
+display: none;
+}
+.button{
+display: none;
+}
+.respondButton{
+display: none;
+}
+.viewButton{
+display: none;
+}
+.blackout{
+	display: none;
+	.respondBox{
+
+		span{
+
+		}
+		.button{
+
+		}
+		.agreeButton{
+
+		}
+		.neutralButton{
+			
+		}
+		.disagreeButton{
+			
+		}
+	}	
+}
