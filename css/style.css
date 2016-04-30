@@ -331,4 +331,82 @@ body {
     .viewTopicBlackout .viewTopicBox .viewTopicButton:hover {
       cursor: pointer; }
 
+.post {
+  position: relative;
+  background-color: #b2b2b2;
+  width: 80vw;
+  left: 50%;
+  transform: translateX(-50%);
+  padding: 0.7vw;
+  border-radius: 0.6vw;
+  top: 6vw;
+  margin-bottom: 4vw; }
+  .post .statement {
+    height: 6.6vw;
+    margin-bottom: 2vw; }
+    .post .statement .statementRatingBox {
+      display: inline-block;
+      vertical-align: top;
+      font-size: 0;
+      width: 1%;
+      height: 100%; }
+      .post .statement .statementRatingBox .statementRating {
+        width: 100%; }
+      .post .statement .statementRatingBox .statementRating:nth-child(3) {
+        height: 50%;
+        background-color: #6ad060; }
+      .post .statement .statementRatingBox .statementRating:nth-child(2) {
+        height: 30%;
+        background-color: #235af9; }
+      .post .statement .statementRatingBox .statementRating:nth-child(1) {
+        height: 20%;
+        background-color: #c93e3c; }
+    .post .statement .statementContentBox {
+      display: inline-block;
+      vertical-align: top;
+      font-size: 0;
+      max-width: 98%; }
+      .post .statement .statementContentBox .statementContent {
+        position: relative;
+        font-size: 1.5vw;
+        border: 0.3vw solid black;
+        background-color: white;
+        padding: 0.5vw 1.5vw;
+        left: 50%;
+        transform: translateX(-50%); }
+  .post .postRatingBox {
+    position: relative;
+    width: 30%;
+    height: 2.9vw;
+    left: 15%;
+    transform: translateX(-50%); }
+    .post .postRatingBox .postRating {
+      font-size: 0;
+      display: inline-block;
+      margin: 0;
+      height: 100%; }
+    .post .postRatingBox .postRating:nth-child(1) {
+      background-color: #6ad060;
+      width: 50%; }
+    .post .postRatingBox .postRating:nth-child(2) {
+      background-color: #235af9;
+      width: 30%; }
+    .post .postRatingBox .postRating:nth-child(3) {
+      background-color: #c93e3c;
+      width: 20%; }
+  .post .postReadMore {
+    position: absolute;
+    text-align: center;
+    font-size: 3vw;
+    background-color: #8c8c8c;
+    border: 0.1vw solid black;
+    width: 30%;
+    padding: 0vw 3.2vw;
+    left: 50%;
+    transform: translateX(-50%);
+    bottom: 0; }
+
+.post:first-child {
+  top: 6vw; }
+
 /*# sourceMappingURL=style.css.map */

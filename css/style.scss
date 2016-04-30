@@ -457,3 +457,137 @@ display: none;
 		}
 	}
 }
+
+//////////////////////////   VIEW PAGE   /////////////////////////////////////////
+
+.post{
+	position: relative;
+	background-color: $lGrey;
+	width: 80vw;
+	left: 50%;
+	transform: translateX(-50%);
+	padding: 0.7vw;
+	border-radius: 0.6vw;
+	top: 6vw;  ///////////////////   test to see if FIRST-CHILD needs to be different
+	margin-bottom: 4vw;
+
+	.statement{
+		height: 6.6vw;
+		margin-bottom: 2vw;
+
+		.statementRatingBox{
+			display: inline-block;
+			vertical-align: top;
+			font-size: 0;
+			// float:left;
+			width: 1%;
+			height: 100%;
+
+			.statementRating{
+				width: 100%;
+
+			}
+			.statementRating:nth-child(3){
+				height: 50%;
+				background-color: $green;
+			}
+			.statementRating:nth-child(2){
+				height: 30%;
+				background-color: $blue;
+			}
+			.statementRating:nth-child(1){
+				height: 20%;
+				background-color: $red;
+			}
+		}
+		.statementContentBox{
+			display: inline-block;
+			vertical-align: top;
+			font-size: 0;
+			max-width: 98%;
+
+			.statementContent{
+				// display: none;
+				position: relative;
+				font-size: 1.5vw;
+				border: 0.3vw solid black;
+				background-color: white;
+				padding: 0.5vw 1.5vw;
+				left: 50%;
+				transform: translateX(-50%);
+
+
+				.statementBlackout{
+
+					.statementRateButton{
+
+					}
+					.statementViewButton{
+
+						.statementResponseNum{
+
+						}
+					}
+					.statementRespondButton{
+
+					}
+				}
+			}
+		}
+	}
+	.postRateButton{
+
+	}
+	.postViewButton{
+
+		.postResponseNum{
+
+		}
+	}
+	.postRespondButton{
+
+	}
+	.postRatingBox{
+		position: relative;
+		width: 30%;
+		height: 2.9vw;
+		left: 15%;
+		transform: translateX(-50%);
+
+		.postRating{
+			font-size: 0;
+			display: inline-block;
+			margin: 0;
+			height: 100%;
+
+		}
+		.postRating:nth-child(1){
+			background-color: $green;
+			width: 50%;
+		}
+		.postRating:nth-child(2){
+			background-color: $blue;
+			width: 30%;
+		}
+		.postRating:nth-child(3){
+			background-color: $red;
+			width: 20%;
+		}
+	}
+	.postReadMore{
+		position: absolute;
+		text-align: center;
+		font-size: 3vw;
+		background-color: $dGrey;
+		border: 0.1vw solid black;
+		width: 30%;
+		padding: 0vw 3.2vw;
+		left: 50%;
+		transform: translateX(-50%);
+		bottom: 0;
+
+	}
+}
+.post:first-child{
+	top: 6vw;
+}
