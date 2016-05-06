@@ -235,7 +235,8 @@ body {
   color: black; }
 
 .simpleLink:hover {
-  color: blue; }
+  color: blue;
+  cursor: pointer; }
 
 .previousDiscussions {
   position: relative;
@@ -360,7 +361,8 @@ body {
     .postFormBox .statementInputBox .statementInput:focus {
       border: 0.2vw solid blue; }
     .postFormBox .statementInputBox .newStatement {
-      margin-top: 0.5vw; }
+      margin-top: 0.5vw;
+      font-size: 1.5vw; }
   .postFormBox .reviewPostButton {
     position: relative;
     font-size: 3vw;

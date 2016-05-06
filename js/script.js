@@ -63,6 +63,24 @@ $(document).ready(function(){
 		 	$('.logOutButton').click(function(event) {
 		 		window.location = "logout.php";
 		 	});
+		 	$('.toolbarLogin').click(function(event) {
+		 		$('.loginBlackout').show();
+		 	});
+		 	$('.toolbarSignUp').click(function(event) {
+		 		window.location = "sign_up.php";
+		 	});
+		 	$('.cloneButton').click(function(event) {
+		 		if($('.statementInputBox').length < 5){
+			 		$('.cloneBox').clone(true,true).insertAfter('.cloneBox');
+			 		$('.cloneButton').eq(0).removeClass('cloneButton').hide();
+			 		$('.cloneBox').eq(0).removeClass('cloneBox');
+			 		$('.clone').eq(0).removeClass('clone');
+			 		$('.clone').val('');
+			 	}
+			 	if($('.statementInputBox').length == 5){
+			 		$('.cloneButton').eq(0).removeClass('cloneButton').hide();
+			 	}
+		 	});
 
 		}); // end of .done function
 	} // end of getData function

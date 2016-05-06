@@ -349,6 +349,7 @@ body{
 }
 .simpleLink:hover{
 	color: blue;
+	cursor: pointer;
 }
 .previousDiscussions{
 	position: relative;
@@ -510,6 +511,8 @@ body{
 		}
 		.newStatement{
 			margin-top: 0.5vw;
+			// text-decoration: none;
+			font-size: 1.5vw;
 		}
 	}
 	.reviewPostButton{
