@@ -1,4 +1,8 @@
-<?php require "inc/head.inc.php"; head("NullSpeak - Respond"); require "inc/toolbar.inc.php"; require "inc/blackouts.inc.php"; ?>
+<?php
+require "inc/head.inc.php";
+head("NullSpeak - Respond");
+require "inc/requires.inc.php";
+?>
 
 <div class="respondSubjectBox">
 	<div class="respondSubjectButton">View Topic</div>

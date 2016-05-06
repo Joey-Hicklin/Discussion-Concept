@@ -11,6 +11,14 @@ $background: #e9e9e9;
 //     Center viewTopicBox with Javascript
 //     Replace closeButton in viewTopic with upper-right circle icon
 //     Repeat close icon for all blackout boxes
+//     Add logic to timers style, showing ready buttons.  The mainTopicTimer becomes a button to the VIEW/RESPOND page of the Main Topic
+//     On respond page, use javascript to generate new statement textareas and center thier focus initially, while moving them downward as the screen fills up with more areas.
+//     Grammarly changes the font size to a set amount. Make font-sizes affected !important
+//     Grammarly glitches text areas on resize. They size they use is based upon Javascript, which executes on page resize. However, using VW would circumvent this.
+//     Add class of .animation to animated items. Then use javascript to delete class, should a user select it in their preferences. This will help achieve a lower page-size.
+//     Add "Showing The" <select><option>(first or last)</> <select> <option>(statementNum)</> \n "Statement(s) in each post" to sidebarSelect menu
+//     Add triangle arrows to bottom of sidebar menu for result pages. Replace with a "DISPLAY" button, should any options be changed. Also add "REVERT" button for returning the search selectors to their last executed state.
+//     Create hover states for all uneditable text so pointer is arrow, and not text icon.
 
 body{
 	box-sizing: border-box;
@@ -24,13 +32,25 @@ body{
 	position: fixed;
 	z-index: 3;
 	width: 100%;
+	//////////////////////////////////  total height: 3.8vw;
 	background-color: $lGrey;
 
-	.login{
-display: none;
+	.tls{
+		display: inline-block;
+		font-size: 2vw;
+		background-color: $green;
+		border: 0.1vw solid black;
+		border-radius: 0.7vw;
+		padding: 0.3vw 1vw;
+		margin: 0vw 0.4vw;
 	}
-	.signUp{
-display: none;
+	.tls:hover{
+		cursor: pointer;
+	}
+	.toolbarLogin{
+		background-color: $dGrey;
+	}
+	.toolbarSignUp{
 	}
 	.timer{
 		display: inline-block;
@@ -42,6 +62,9 @@ display: none;
 		color: red;
 		font-family: Orbitron, sans-serif;
 		font-size: 1.5vw;
+	}
+	.timer:hover{
+		cursor: progress; //////////////////////////////////add login in javascript
 	}
 	.mainTopicTimer{
 		margin-left: 1vw;
@@ -61,6 +84,25 @@ display: none;
 		border: 0.1vw solid white;
 		padding: 0.5vw 0.7vw;
 	}
+	.layerBox{
+		display: inline-block;
+		vertical-align: top;
+		margin: 0.3vw 0vw;
+		width: 55vw;
+
+		.layerButton{
+			display: inline-block;
+			background-color: $green;
+			border: 0.1vw solid black;
+			border-radius: 0.5vw;
+			font-size: 2vw;
+			padding: 0.3vw 1vw;
+			margin-left: 0.4vw;
+		}
+		.layerButton:hover{
+			cursor: pointer;
+		}
+	}
 	.optionsToolbar{
 		position: fixed;
 		top: 0.5vw;
@@ -73,6 +115,69 @@ display: none;
 		background-color: $dGrey;
 		border: 0.2vw solid white;
 		border-radius: 0.7vw;
+	}
+}
+
+////////////////////////////   LOOSE BLACKOUTS   ///////////////////
+
+.layerBlackout{
+	display: none;
+	position: fixed;
+	z-index: 2;
+	height: 100vh;
+	width: 100vw;
+	background-color: rgba(#000,0.9);
+
+	.layerBox{
+		position: relative;
+		left: 50%;
+		top: 50%;
+		transform: translate(-50%, -50%);
+		background-color:white;
+		border: 0.2vw solid $dGrey;
+		border-radius: 0.5vw;
+		max-width: 90vw;
+		max-height: 70vh;
+
+		.layerContent{
+			font-size: 2vw;
+			padding: 0.5vw 2vw;
+			overflow: auto;
+			max-height: 53vh;
+		}
+		.layerNavBox{
+			text-align: center;
+			padding: 1vw 0vw;
+
+			.layerNavButton{
+				text-align: center;
+				font-size: 3vw;
+				background-color: $dGrey;
+				border: 0.2vw solid black;
+				display: inline-block;
+			}
+			.layerNavButton:hover{
+				cursor: pointer;
+			}
+			.layerNavPrev{
+
+				span{
+					display: block;
+					transform: scaleX(0.5) rotate(-90deg);
+				}
+			}
+			.layerNavGo{
+				padding: 0.5vw 1vw;
+				margin: 0vw 5vw;
+			}
+			.layerNavNext{
+
+				span{
+					display: block;
+					transform: scaleX(0.5) rotate(90deg);
+				}
+			}
+		}
 	}
 }
 
@@ -98,7 +203,6 @@ display: none;
 		.optionButton{
 			text-align: center;
 			font-size: 4vw;
-			background-color: $green;
 			border: 0.3vw solid black;
 			border-radius: 0.5vw;
 			padding: 0.3vw 1vw;
@@ -108,8 +212,16 @@ display: none;
 		.optionButton:hover{
 			cursor: pointer;
 		}
-		.optionButton:last-child{
+		.signUpButton{
+			background-color: $green;
+		}
+		.logInButton{
+			background-color: $dGrey;
+		}
+		.logOutButton{
 			background-color: $red;
+		}
+		.optionButton:last-child{
 			margin-bottom: 4vw;
 
 		}
@@ -127,7 +239,7 @@ display: none;
 	background-color: rgba(#000,0.9);
 
 	.loginBox{
-		position: fixed;
+		position: absolute;
 		background-color: $lGrey;
 		border: 0.3vw solid $green;
 		border-radius: 0.5vw;
@@ -156,6 +268,7 @@ display: none;
 				text-decoration: none;
 			}
 			.loginForget:hover{
+				cursor: pointer;
 				color: blue;
 			}
 		}
@@ -259,12 +372,17 @@ display: none;
 .mainButton:hover{
 	cursor: pointer;
 }
-.respondButton{
+.mainRespondButton{
 	background-color: $green;
 	margin-right: 11.4vw;
 }
 .viewButton{
+	color: black;
 	background-color: $blue;
+	text-decoration: none;
+}
+.viewButton:visited{
+	color: black;
 }
 
 ///////////////////////   RESPOND BOX   ///////////////////////////
@@ -383,7 +501,7 @@ display: none;
 			resize: none;
 			width: 100%;
 			border: 0.2vw solid black;
-			font-size: 1.5vw;
+			font-size: 1.5vw !important;
 			padding: 0.5vw 1.5vw;
 
 		}
@@ -423,18 +541,21 @@ display: none;
 	background-color: rgba(#000,0.9);
 
 	.viewTopicBox{
-		position: fixed;
-		/////////////////////////////   center with Javascript   ///////////////////
+		position: absolute;
 		background-color: white;
 		border: 0.3vw solid $dGrey;
 		border-radius: 0.3vw;
 		max-width: 90vw;
-		top: 5vw; //////////////////   center with Javascript   //////////////////
+		max-height: 70vh;
+		padding-bottom: 1vw;
+		top: 50%;
+		left: 50%;
+		transform: translate(-50%, -50%);
 
 		.viewTopic{
 			font-size: 2vw;
 			padding: 0.5vw 1.5vw;
-			max-height: 75vh;
+			max-height: 60vh;
 			overflow-Y: auto;
 
 		}
@@ -446,8 +567,8 @@ display: none;
 			border: 0.2vw solid black;
 			border-radius: 0.5vw;
 			padding: 0.1vw 1vw;
-			margin-top: 1vw;
-			margin-bottom: 1vw;
+			// margin-top: 1vw;
+			// margin-bottom: 1vw;
 			left: 50%;
 			transform: translateX(-50%);
 
@@ -458,13 +579,13 @@ display: none;
 	}
 }
 
-//////////////////////////   VIEW PAGE   /////////////////////////////////////////
+//////////////////////////   POST   /////////////////////////////////////////
 
 .post{
 	position: relative;
 	background-color: $lGrey;
 	width: 80vw;
-	left: 50%;
+	left: 58%;  /////////////////////////   +8% to this for sidebar slide
 	transform: translateX(-50%);
 	padding: 0.7vw;
 	border-radius: 0.6vw;
@@ -473,7 +594,7 @@ display: none;
 
 	.statement{
 		height: 6.6vw;
-		margin-bottom: 2vw;
+		margin-bottom: 0.8vw;
 
 		.statementRatingBox{
 			display: inline-block;
@@ -504,36 +625,95 @@ display: none;
 			display: inline-block;
 			vertical-align: top;
 			font-size: 0;
-			max-width: 98%;
+			max-width: 99%;
 
 			.statementContent{
-				// display: none;
-				position: relative;
+				position: absolute;
 				font-size: 1.5vw;
 				border: 0.3vw solid black;
 				background-color: white;
 				padding: 0.5vw 1.5vw;
-				left: 50%;
-				transform: translateX(-50%);
+				margin-right: 0.7vw;
+				height: 5.2vw;
 
+				span{
+					// vertical-align: middle;
+				}
 
-				.statementBlackout{
+			}
+			.statementBlackout{
+				display: none;
+				position: absolute;
+				background-color: rgba(#000,0.9);
+				height: 100%;
+				width: 100%;
+				top: 0;
+				left: 0;
+				z-index: 2;
 
-					.statementRateButton{
+				.statementButton{
+					position: absolute;
+					font-size: 3vw;
+					background-color: $dGrey;
+					border: 0.1vw solid white;
+					border-radius: 0.8vw;
+					height: 3.6vw;
+					padding: 0.5vw 1.5vw;
+				}
+				.statementButton:hover{
+					cursor: pointer;
+				}
+				.statementRateButton{
+					top: 50%;
+					left: 15%;
+					transform: translate(-50%, -50%);
+				}
+				.statementViewButton{
+					top: 50%;
+					left: 50%;
+					transform: translate(-50%, -50%);
 
-					}
-					.statementViewButton{
-
-						.statementResponseNum{
-
-						}
-					}
-					.statementRespondButton{
+					.statementResponseNum{
+						display: inline-block;
+						vertical-align: top;
+						background-color: $red;
+						color: white;
+						border: 0.1vw solid black;
+						border-radius: 100%;
+						padding: 0 1vw;
 
 					}
 				}
+				.statementRespondButton{
+					top: 50%;
+					left: 85%;
+					transform: translate(-50%, -50%);
+
+				}
 			}
 		}
+		.statementContentBox:hover{
+
+			.statementBlackout{
+				display: block;
+			}
+		}
+	}
+	.postButton{
+		display: none;
+		// display: inline-block;
+		position: relative;
+		vertical-align: bottom;
+		font-size: 3vw;
+		background-color: $dGrey;
+		border: 0.1vw solid black;
+		border-radius: 0.8vw;
+		padding: 0.5vw 1.5vw;
+		margin-left: 3vw;
+
+	}
+	.postButton:hover{
+		cursor: pointer;
 	}
 	.postRateButton{
 
@@ -541,6 +721,12 @@ display: none;
 	.postViewButton{
 
 		.postResponseNum{
+			display: inline-block;
+			background-color: $red;
+			color: white;
+			border: 0.1vw solid black;
+			border-radius: 100%;
+			padding: 0 1vw;
 
 		}
 	}
@@ -548,9 +734,10 @@ display: none;
 
 	}
 	.postRatingBox{
+		display: inline-block;
 		position: relative;
 		width: 30%;
-		height: 2.9vw;
+		height: 2.6vw;
 		left: 15%;
 		transform: translateX(-50%);
 
@@ -585,9 +772,324 @@ display: none;
 		left: 50%;
 		transform: translateX(-50%);
 		bottom: 0;
-
+	}
+	.postReadMore:hover{
+		cursor: pointer;
 	}
 }
-.post:first-child{
-	top: 6vw;
+// .post:first-child{
+// 	top: 6vw;
+// }
+
+//////////////////////////////////   VIEW SIDEBAR   /////////////////////////
+
+.sidebarBox{
+	position: fixed;
+	background-color: white;
+	border-right: 0.1vw solid black;
+	height: 100vh;
+	width: 15vw;
+	z-index: 1;
+
+	.sidebarTab{
+		position: absolute;
+		transform: translateY(-50%);
+		top: 50%;
+		right: -2.5vw;  //////////////  -3vw on slideIn
+		background-color: $dGrey;
+		border: 0.2vw solid black;
+		border-radius: 0.5vw;
+		z-index: -1;
+
+		.sidebarTabArrow{
+			transform: rotate(-90deg) scaleY(0.5); /////  rotate 90deg on slideIn
+			font-size: 3vw;
+
+		}
+	}
+	.sidebarTab:hover{
+		cursor: pointer;
+	}
+	.sidebarTopicBox{
+		background-color: white;
+		margin-top: 4.3vw;
+		border-bottom: 0.2vw solid black;
+
+		.sidebarTopicMain{
+			// display: none;
+			font-size: 2.2vw;
+			text-align: center;
+			padding-bottom: 0.5vw;
+
+		}
+		.sidebarTopicView{
+			display: none;
+			position: relative;
+			background-color: $dGrey;
+			font-size: 2.8vw;
+			text-align: center;
+			border: 0.3vw solid black;
+			border-radius: 0.5vw;
+			padding: 0.5vw 0vw;
+			margin: 1vw 1vw;
+
+		}
+		.sidebarTopicView:hover{
+			cursor: pointer;
+		}
+	}
+	.sidebarReturnBox{
+		display: none;
+		background-color: white;
+		padding: 8vw 1vw;
+
+		.sidebarReturnButton{
+			padding: 0.5vw 1vw;
+			text-align: center;
+			font-size: 1.8vw;
+			background-color: $dGrey;
+			border: 0.2vw solid black;
+			border-radius: 0.5vw;
+
+		}
+		.sidebarReturnButton:hover{
+			cursor: pointer;
+		}
+	}
+	.sidebarViewBox{
+		// display: none;
+		background-color: white;
+		border-bottom: 0.2vw solid black;
+		padding: 1vw 0vw;
+		text-align: center;
+
+		.sidebarViewType{
+			margin-bottom: 0.5vw;
+
+			span{
+				font-size: 1.3vw;
+			}
+			select{
+				font-size: 1vw;
+				min-width: 8vw;
+
+				option{
+
+				}
+			}
+		}
+		.sidebarViewIn{
+
+			span{
+			font-size: 1.3vw;
+
+			}
+			select{
+				font-size: 1vw;
+				min-width: 8vw;
+
+				option{
+
+				}
+			}
+		}
+	}
+	.sidebarSortBox{
+		// display: none;
+		background-color: white;
+		border-bottom: 0.2vw solid black;
+		text-align: center;
+		padding: 1vw 0vw;
+
+		span{
+			display: block;
+			font-size: 1.3vw;
+
+		}
+		select{
+			font-size: 1vw;
+			min-width: 8vw;
+			margin-top: 0.5vw;
+
+			option{
+
+			}
+		}
+	}
+	.sidebarDisplayBox{
+		// display: none;
+		background-color: white;
+		border-bottom: 0.2vw solid black;
+		padding: 1vw 0vw;
+		text-align: center;
+
+		span{
+			font-size: 1.3vw;
+			display: block;
+
+		}
+		select{
+			font-size: 1vw;
+			margin-top: 0.5vw;
+			min-width: 8vw;
+
+			option{
+
+			}
+		}
+	}
+	.sidebarShowing{
+		// display: none;
+		background-color: white;
+		position: relative;
+		text-align: center;
+
+		span{
+			font-size: 1.8vw;
+		}
+		.sidebarShowingTitle{
+			padding-top: 1vw;
+			display: block;
+
+		}
+		.sidebarShowingNum{
+			margin: 0vw 1vw;
+		}
+		.sidebarShowingButton{
+			display: inline-block;
+			font-size: 0;
+			background-color: $dGrey;
+			border: 0.1vw solid black;
+
+			.sidebarShowingArrow{
+				font-size: 2vw;
+			}
+		}
+		.sidebarShowingButton:hover{
+			cursor: pointer;
+		}
+		.sidebarShowingPrev{
+
+			.sidebarShowingArrow{
+				transform: rotate(-90deg) scaleY(0.5);
+			}
+		}
+		.sidebarShowingNext{
+
+			.sidebarShowingArrow{
+				transform: rotate(90deg) scaleY(0.5);
+			}
+		}
+	}
+}
+
+/////////////////////////////////   RATE   ///////////////////////////////////////
+
+.rateBlackout{
+	display: none;
+	position: fixed;
+	z-index: 2;
+	height: 100vh;
+	width: 100vw;
+	background-color: rgba(#000,0.9);
+
+	.rateContent{
+		position: absolute;
+		top: 50%;
+		left: 35%;
+		transform: translate(-50%, -50%);
+		font-size: 1.5vw;
+		background-color: white;
+		border: 0.2vw solid $dGrey;
+		border-radius: 0.5vw;
+		max-height: 70%;
+		max-width: 70%;
+		padding: 1vw;
+		overflow: auto;
+
+	}
+	.rateRatingBox{
+		position: absolute;
+		top: 50%;
+		left: 85%;
+		transform: translate(-50%, -50%);
+		background-color: white;
+		border: 0.2vw solid $dGrey;
+		border-radius: 0.5vw;
+		padding: 3vw 1vw;
+
+		.rateRatingButton{
+			text-align: center;
+			font-size: 3vw;
+			border: 0.2vw solid black;
+			border-radius: 0.5vw;
+			padding: 0.2vw 1vw;
+		}
+		.rateRatingButton:hover{
+			cursor: pointer;
+		}
+		.rateRatingGreen{
+			background-color: $green;
+		}
+		.rateRatingBlue{
+			background-color: $blue;
+			margin: 1vw 0vw;
+		}
+		.rateRatingRed{
+			background-color: $red;
+		}
+	}
+}
+
+//////////////////////////   SIGN UP   ///////////////////////////////
+
+.signUpMessage{
+	position: absolute;
+	left: 50%;
+	transform: translateX(-50%);
+	text-align: center;
+	font-size: 4vw;
+}
+.signUpForm{
+	display: inline-block;
+	position: relative;
+	left: 50vw;
+	top: 50vh;
+	transform: translate(-50%, -50%);
+	background-color: white;
+	border: 0.3vw solid black;
+	border-radius: 0.5vw;
+	text-align: -webkit-center;
+	padding: 1vw;
+
+	input{
+		display: block;
+		font-size: 2vw;
+		margin-bottom: 1vw;
+		border: 0.2vw solid white;
+		border-bottom: 0.2vw solid black;
+	}
+	input:focus{
+		border: 0.2vw solid blue;
+	}
+	input[type=email]{
+
+	}
+	input[type=password]{
+
+	}
+	.signUpSubmit{
+		display: inline-block;
+		font-size: 2vw;
+		margin-bottom: 1vw;
+		background-color: $green;
+		border: 0.2vw solid black;
+	}
+	.signUpSubmit:hover{
+		cursor: pointer;
+	}
+	.logInButton{
+		margin-right: 2vw;
+		background-color: $dGrey;
+	}
 }

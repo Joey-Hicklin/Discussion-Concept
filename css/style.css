@@ -8,10 +8,18 @@ body {
   z-index: 3;
   width: 100%;
   background-color: #b2b2b2; }
-  #toolbar .login {
-    display: none; }
-  #toolbar .signUp {
-    display: none; }
+  #toolbar .tls {
+    display: inline-block;
+    font-size: 2vw;
+    background-color: #6ad060;
+    border: 0.1vw solid black;
+    border-radius: 0.7vw;
+    padding: 0.3vw 1vw;
+    margin: 0vw 0.4vw; }
+  #toolbar .tls:hover {
+    cursor: pointer; }
+  #toolbar .toolbarLogin {
+    background-color: #8c8c8c; }
   #toolbar .timer {
     display: inline-block;
     margin: 0vw 0.4vw;
@@ -22,6 +30,8 @@ body {
     color: red;
     font-family: Orbitron, sans-serif;
     font-size: 1.5vw; }
+  #toolbar .timer:hover {
+    cursor: progress; }
   #toolbar .mainTopicTimer {
     margin-left: 1vw; }
   #toolbar .mainToolbar {
@@ -32,6 +42,21 @@ body {
     background-color: #8c8c8c;
     border: 0.1vw solid white;
     padding: 0.5vw 0.7vw; }
+  #toolbar .layerBox {
+    display: inline-block;
+    vertical-align: top;
+    margin: 0.3vw 0vw;
+    width: 55vw; }
+    #toolbar .layerBox .layerButton {
+      display: inline-block;
+      background-color: #6ad060;
+      border: 0.1vw solid black;
+      border-radius: 0.5vw;
+      font-size: 2vw;
+      padding: 0.3vw 1vw;
+      margin-left: 0.4vw; }
+    #toolbar .layerBox .layerButton:hover {
+      cursor: pointer; }
   #toolbar .optionsToolbar {
     position: fixed;
     top: 0.5vw;
@@ -44,6 +69,49 @@ body {
     background-color: #8c8c8c;
     border: 0.2vw solid white;
     border-radius: 0.7vw; }
+
+.layerBlackout {
+  display: none;
+  position: fixed;
+  z-index: 2;
+  height: 100vh;
+  width: 100vw;
+  background-color: rgba(0, 0, 0, 0.9); }
+  .layerBlackout .layerBox {
+    position: relative;
+    left: 50%;
+    top: 50%;
+    transform: translate(-50%, -50%);
+    background-color: white;
+    border: 0.2vw solid #8c8c8c;
+    border-radius: 0.5vw;
+    max-width: 90vw;
+    max-height: 70vh; }
+    .layerBlackout .layerBox .layerContent {
+      font-size: 2vw;
+      padding: 0.5vw 2vw;
+      overflow: auto;
+      max-height: 53vh; }
+    .layerBlackout .layerBox .layerNavBox {
+      text-align: center;
+      padding: 1vw 0vw; }
+      .layerBlackout .layerBox .layerNavBox .layerNavButton {
+        text-align: center;
+        font-size: 3vw;
+        background-color: #8c8c8c;
+        border: 0.2vw solid black;
+        display: inline-block; }
+      .layerBlackout .layerBox .layerNavBox .layerNavButton:hover {
+        cursor: pointer; }
+      .layerBlackout .layerBox .layerNavBox .layerNavPrev span {
+        display: block;
+        transform: scaleX(0.5) rotate(-90deg); }
+      .layerBlackout .layerBox .layerNavBox .layerNavGo {
+        padding: 0.5vw 1vw;
+        margin: 0vw 5vw; }
+      .layerBlackout .layerBox .layerNavBox .layerNavNext span {
+        display: block;
+        transform: scaleX(0.5) rotate(90deg); }
 
 .optionBlackout {
   display: none;
@@ -63,15 +131,19 @@ body {
     .optionBlackout .optionBox .optionButton {
       text-align: center;
       font-size: 4vw;
-      background-color: #6ad060;
       border: 0.3vw solid black;
       border-radius: 0.5vw;
       padding: 0.3vw 1vw;
       margin: 2vw 3vw; }
     .optionBlackout .optionBox .optionButton:hover {
       cursor: pointer; }
+    .optionBlackout .optionBox .signUpButton {
+      background-color: #6ad060; }
+    .optionBlackout .optionBox .logInButton {
+      background-color: #8c8c8c; }
+    .optionBlackout .optionBox .logOutButton {
+      background-color: #c93e3c; }
     .optionBlackout .optionBox .optionButton:last-child {
-      background-color: #c93e3c;
       margin-bottom: 4vw; }
 
 .loginBlackout {
@@ -82,7 +154,7 @@ body {
   width: 100vw;
   background-color: rgba(0, 0, 0, 0.9); }
   .loginBlackout .loginBox {
-    position: fixed;
+    position: absolute;
     background-color: #b2b2b2;
     border: 0.3vw solid #6ad060;
     border-radius: 0.5vw;
@@ -104,6 +176,7 @@ body {
       color: black;
       text-decoration: none; }
     .loginBlackout .loginBox .passwordBox .loginForget:hover {
+      cursor: pointer;
       color: blue; }
     .loginBlackout .loginBox .loginButton {
       position: relative;
@@ -186,12 +259,17 @@ body {
 .mainButton:hover {
   cursor: pointer; }
 
-.respondButton {
+.mainRespondButton {
   background-color: #6ad060;
   margin-right: 11.4vw; }
 
 .viewButton {
-  background-color: #235af9; }
+  color: black;
+  background-color: #235af9;
+  text-decoration: none; }
+
+.viewButton:visited {
+  color: black; }
 
 .respondBlackout {
   display: none;
@@ -277,7 +355,7 @@ body {
       resize: none;
       width: 100%;
       border: 0.2vw solid black;
-      font-size: 1.5vw;
+      font-size: 1.5vw !important;
       padding: 0.5vw 1.5vw; }
     .postFormBox .statementInputBox .statementInput:focus {
       border: 0.2vw solid blue; }
@@ -305,16 +383,20 @@ body {
   width: 100vw;
   background-color: rgba(0, 0, 0, 0.9); }
   .viewTopicBlackout .viewTopicBox {
-    position: fixed;
+    position: absolute;
     background-color: white;
     border: 0.3vw solid #8c8c8c;
     border-radius: 0.3vw;
     max-width: 90vw;
-    top: 5vw; }
+    max-height: 70vh;
+    padding-bottom: 1vw;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%); }
     .viewTopicBlackout .viewTopicBox .viewTopic {
       font-size: 2vw;
       padding: 0.5vw 1.5vw;
-      max-height: 75vh;
+      max-height: 60vh;
       overflow-Y: auto; }
     .viewTopicBlackout .viewTopicBox .viewTopicButton {
       display: inline-block;
@@ -324,8 +406,6 @@ body {
       border: 0.2vw solid black;
       border-radius: 0.5vw;
       padding: 0.1vw 1vw;
-      margin-top: 1vw;
-      margin-bottom: 1vw;
       left: 50%;
       transform: translateX(-50%); }
     .viewTopicBlackout .viewTopicBox .viewTopicButton:hover {
@@ -335,7 +415,7 @@ body {
   position: relative;
   background-color: #b2b2b2;
   width: 80vw;
-  left: 50%;
+  left: 58%;
   transform: translateX(-50%);
   padding: 0.7vw;
   border-radius: 0.6vw;
@@ -343,7 +423,7 @@ body {
   margin-bottom: 4vw; }
   .post .statement {
     height: 6.6vw;
-    margin-bottom: 2vw; }
+    margin-bottom: 0.8vw; }
     .post .statement .statementRatingBox {
       display: inline-block;
       vertical-align: top;
@@ -365,19 +445,80 @@ body {
       display: inline-block;
       vertical-align: top;
       font-size: 0;
-      max-width: 98%; }
+      max-width: 99%; }
       .post .statement .statementContentBox .statementContent {
-        position: relative;
+        position: absolute;
         font-size: 1.5vw;
         border: 0.3vw solid black;
         background-color: white;
         padding: 0.5vw 1.5vw;
-        left: 50%;
-        transform: translateX(-50%); }
+        margin-right: 0.7vw;
+        height: 5.2vw; }
+      .post .statement .statementContentBox .statementBlackout {
+        display: none;
+        position: absolute;
+        background-color: rgba(0, 0, 0, 0.9);
+        height: 100%;
+        width: 100%;
+        top: 0;
+        left: 0;
+        z-index: 2; }
+        .post .statement .statementContentBox .statementBlackout .statementButton {
+          position: absolute;
+          font-size: 3vw;
+          background-color: #8c8c8c;
+          border: 0.1vw solid white;
+          border-radius: 0.8vw;
+          height: 3.6vw;
+          padding: 0.5vw 1.5vw; }
+        .post .statement .statementContentBox .statementBlackout .statementButton:hover {
+          cursor: pointer; }
+        .post .statement .statementContentBox .statementBlackout .statementRateButton {
+          top: 50%;
+          left: 15%;
+          transform: translate(-50%, -50%); }
+        .post .statement .statementContentBox .statementBlackout .statementViewButton {
+          top: 50%;
+          left: 50%;
+          transform: translate(-50%, -50%); }
+          .post .statement .statementContentBox .statementBlackout .statementViewButton .statementResponseNum {
+            display: inline-block;
+            vertical-align: top;
+            background-color: #c93e3c;
+            color: white;
+            border: 0.1vw solid black;
+            border-radius: 100%;
+            padding: 0 1vw; }
+        .post .statement .statementContentBox .statementBlackout .statementRespondButton {
+          top: 50%;
+          left: 85%;
+          transform: translate(-50%, -50%); }
+    .post .statement .statementContentBox:hover .statementBlackout {
+      display: block; }
+  .post .postButton {
+    display: none;
+    position: relative;
+    vertical-align: bottom;
+    font-size: 3vw;
+    background-color: #8c8c8c;
+    border: 0.1vw solid black;
+    border-radius: 0.8vw;
+    padding: 0.5vw 1.5vw;
+    margin-left: 3vw; }
+  .post .postButton:hover {
+    cursor: pointer; }
+  .post .postViewButton .postResponseNum {
+    display: inline-block;
+    background-color: #c93e3c;
+    color: white;
+    border: 0.1vw solid black;
+    border-radius: 100%;
+    padding: 0 1vw; }
   .post .postRatingBox {
+    display: inline-block;
     position: relative;
     width: 30%;
-    height: 2.9vw;
+    height: 2.6vw;
     left: 15%;
     transform: translateX(-50%); }
     .post .postRatingBox .postRating {
@@ -405,8 +546,210 @@ body {
     left: 50%;
     transform: translateX(-50%);
     bottom: 0; }
+  .post .postReadMore:hover {
+    cursor: pointer; }
 
-.post:first-child {
-  top: 6vw; }
+.sidebarBox {
+  position: fixed;
+  background-color: white;
+  border-right: 0.1vw solid black;
+  height: 100vh;
+  width: 15vw;
+  z-index: 1; }
+  .sidebarBox .sidebarTab {
+    position: absolute;
+    transform: translateY(-50%);
+    top: 50%;
+    right: -2.5vw;
+    background-color: #8c8c8c;
+    border: 0.2vw solid black;
+    border-radius: 0.5vw;
+    z-index: -1; }
+    .sidebarBox .sidebarTab .sidebarTabArrow {
+      transform: rotate(-90deg) scaleY(0.5);
+      font-size: 3vw; }
+  .sidebarBox .sidebarTab:hover {
+    cursor: pointer; }
+  .sidebarBox .sidebarTopicBox {
+    background-color: white;
+    margin-top: 4.3vw;
+    border-bottom: 0.2vw solid black; }
+    .sidebarBox .sidebarTopicBox .sidebarTopicMain {
+      font-size: 2.2vw;
+      text-align: center;
+      padding-bottom: 0.5vw; }
+    .sidebarBox .sidebarTopicBox .sidebarTopicView {
+      display: none;
+      position: relative;
+      background-color: #8c8c8c;
+      font-size: 2.8vw;
+      text-align: center;
+      border: 0.3vw solid black;
+      border-radius: 0.5vw;
+      padding: 0.5vw 0vw;
+      margin: 1vw 1vw; }
+    .sidebarBox .sidebarTopicBox .sidebarTopicView:hover {
+      cursor: pointer; }
+  .sidebarBox .sidebarReturnBox {
+    display: none;
+    background-color: white;
+    padding: 8vw 1vw; }
+    .sidebarBox .sidebarReturnBox .sidebarReturnButton {
+      padding: 0.5vw 1vw;
+      text-align: center;
+      font-size: 1.8vw;
+      background-color: #8c8c8c;
+      border: 0.2vw solid black;
+      border-radius: 0.5vw; }
+    .sidebarBox .sidebarReturnBox .sidebarReturnButton:hover {
+      cursor: pointer; }
+  .sidebarBox .sidebarViewBox {
+    background-color: white;
+    border-bottom: 0.2vw solid black;
+    padding: 1vw 0vw;
+    text-align: center; }
+    .sidebarBox .sidebarViewBox .sidebarViewType {
+      margin-bottom: 0.5vw; }
+      .sidebarBox .sidebarViewBox .sidebarViewType span {
+        font-size: 1.3vw; }
+      .sidebarBox .sidebarViewBox .sidebarViewType select {
+        font-size: 1vw;
+        min-width: 8vw; }
+    .sidebarBox .sidebarViewBox .sidebarViewIn span {
+      font-size: 1.3vw; }
+    .sidebarBox .sidebarViewBox .sidebarViewIn select {
+      font-size: 1vw;
+      min-width: 8vw; }
+  .sidebarBox .sidebarSortBox {
+    background-color: white;
+    border-bottom: 0.2vw solid black;
+    text-align: center;
+    padding: 1vw 0vw; }
+    .sidebarBox .sidebarSortBox span {
+      display: block;
+      font-size: 1.3vw; }
+    .sidebarBox .sidebarSortBox select {
+      font-size: 1vw;
+      min-width: 8vw;
+      margin-top: 0.5vw; }
+  .sidebarBox .sidebarDisplayBox {
+    background-color: white;
+    border-bottom: 0.2vw solid black;
+    padding: 1vw 0vw;
+    text-align: center; }
+    .sidebarBox .sidebarDisplayBox span {
+      font-size: 1.3vw;
+      display: block; }
+    .sidebarBox .sidebarDisplayBox select {
+      font-size: 1vw;
+      margin-top: 0.5vw;
+      min-width: 8vw; }
+  .sidebarBox .sidebarShowing {
+    background-color: white;
+    position: relative;
+    text-align: center; }
+    .sidebarBox .sidebarShowing span {
+      font-size: 1.8vw; }
+    .sidebarBox .sidebarShowing .sidebarShowingTitle {
+      padding-top: 1vw;
+      display: block; }
+    .sidebarBox .sidebarShowing .sidebarShowingNum {
+      margin: 0vw 1vw; }
+    .sidebarBox .sidebarShowing .sidebarShowingButton {
+      display: inline-block;
+      font-size: 0;
+      background-color: #8c8c8c;
+      border: 0.1vw solid black; }
+      .sidebarBox .sidebarShowing .sidebarShowingButton .sidebarShowingArrow {
+        font-size: 2vw; }
+    .sidebarBox .sidebarShowing .sidebarShowingButton:hover {
+      cursor: pointer; }
+    .sidebarBox .sidebarShowing .sidebarShowingPrev .sidebarShowingArrow {
+      transform: rotate(-90deg) scaleY(0.5); }
+    .sidebarBox .sidebarShowing .sidebarShowingNext .sidebarShowingArrow {
+      transform: rotate(90deg) scaleY(0.5); }
+
+.rateBlackout {
+  display: none;
+  position: fixed;
+  z-index: 2;
+  height: 100vh;
+  width: 100vw;
+  background-color: rgba(0, 0, 0, 0.9); }
+  .rateBlackout .rateContent {
+    position: absolute;
+    top: 50%;
+    left: 35%;
+    transform: translate(-50%, -50%);
+    font-size: 1.5vw;
+    background-color: white;
+    border: 0.2vw solid #8c8c8c;
+    border-radius: 0.5vw;
+    max-height: 70%;
+    max-width: 70%;
+    padding: 1vw;
+    overflow: auto; }
+  .rateBlackout .rateRatingBox {
+    position: absolute;
+    top: 50%;
+    left: 85%;
+    transform: translate(-50%, -50%);
+    background-color: white;
+    border: 0.2vw solid #8c8c8c;
+    border-radius: 0.5vw;
+    padding: 3vw 1vw; }
+    .rateBlackout .rateRatingBox .rateRatingButton {
+      text-align: center;
+      font-size: 3vw;
+      border: 0.2vw solid black;
+      border-radius: 0.5vw;
+      padding: 0.2vw 1vw; }
+    .rateBlackout .rateRatingBox .rateRatingButton:hover {
+      cursor: pointer; }
+    .rateBlackout .rateRatingBox .rateRatingGreen {
+      background-color: #6ad060; }
+    .rateBlackout .rateRatingBox .rateRatingBlue {
+      background-color: #235af9;
+      margin: 1vw 0vw; }
+    .rateBlackout .rateRatingBox .rateRatingRed {
+      background-color: #c93e3c; }
+
+.signUpMessage {
+  position: absolute;
+  left: 50%;
+  transform: translateX(-50%);
+  text-align: center;
+  font-size: 4vw; }
+
+.signUpForm {
+  display: inline-block;
+  position: relative;
+  left: 50vw;
+  top: 50vh;
+  transform: translate(-50%, -50%);
+  background-color: white;
+  border: 0.3vw solid black;
+  border-radius: 0.5vw;
+  text-align: -webkit-center;
+  padding: 1vw; }
+  .signUpForm input {
+    display: block;
+    font-size: 2vw;
+    margin-bottom: 1vw;
+    border: 0.2vw solid white;
+    border-bottom: 0.2vw solid black; }
+  .signUpForm input:focus {
+    border: 0.2vw solid blue; }
+  .signUpForm .signUpSubmit {
+    display: inline-block;
+    font-size: 2vw;
+    margin-bottom: 1vw;
+    background-color: #6ad060;
+    border: 0.2vw solid black; }
+  .signUpForm .signUpSubmit:hover {
+    cursor: pointer; }
+  .signUpForm .logInButton {
+    margin-right: 2vw;
+    background-color: #8c8c8c; }
 
 /*# sourceMappingURL=style.css.map */

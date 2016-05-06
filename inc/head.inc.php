@@ -1,4 +1,6 @@
-<?php function head($title){ ?>
+<?php 
+session_start();
+function head($title){ ?>
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -6,6 +8,8 @@
 	<title><?php echo $title; ?></title>
 	<link rel="stylesheet" href="css/style.css">
 	<link href='https://fonts.googleapis.com/css?family=Orbitron' rel='stylesheet' type='text/css'>
+	<script src="https://ajax.googleapis.com/ajax/libs/jquery/2.2.2/jquery.min.js"></script>
+	<!-- script.js is below the blackouts -->
 </head>
 <body>
 <?php } ?>
