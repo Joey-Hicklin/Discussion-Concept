@@ -6,14 +6,25 @@ require "inc/requires.inc.php";
 
 <div class="respondSubjectBox">
 	<div class="respondSubjectButton">View Topic</div>
-	<span>I disagree because:</span>
+	<span>I <?php
+		if (isset($_GET['rS'])){
+			if ($_GET['rS'] == 'A'){
+				$_SESSION['rS'] = '"'.$_GET['rS'].'"';
+				echo "agree";
+			} elseif ($_GET['rS'] == 'N'){
+				$_SESSION['rS'] = '"'.$_GET['rS'].'"';
+				echo "am neutral";
+			} elseif ($_GET['rS'] == 'D'){
+				$_SESSION['rS'] = '"'.$_GET['rS'].'"';
+				echo "disagree";
+			}
+		}
+	?> because:</span>
 </div>
-<form class="postFormBox" action="" id="postNew">
+<form class="postFormBox" action="test.php" id="postNew" method="post">
 	<div class="statementInputBox cloneBox">
 		<textarea class="statementInput clone" form="postNew" rows="4" maxlength="350" name="statements[]" autofocus></textarea>
 		<div class="simpleLink newStatement cloneButton">Add another statement</div>
-		
 	</div><!--END OF statementInputBox DIV-->
-
-	<input class="reviewPostButton" type="submit" value="REVIEW POST">
+	<input class="reviewPostButton" type="button" value="REVIEW POST">
 </form>

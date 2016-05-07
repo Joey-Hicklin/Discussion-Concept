@@ -27,25 +27,29 @@
 		</div>
 		<div class="respondBox">
 			<span>Respond in:</span>
-			<div class="agreeButton respondInButton">AGREEMENT</div>
-			<div class="neutralButton respondInButton">NEUTRALITY</div>
-			<div class="disagreeButton respondInButton">DISAGREEMENT</div>
+			<div onclick="window.location = 'respond.php?rS=A'" class="agreeButton respondInButton">AGREEMENT</div>
+			<div onclick="window.location = 'respond.php?rS=N'" class="neutralButton respondInButton">NEUTRALITY</div>
+			<div onclick="window.location = 'respond.php?rS=D'" class="disagreeButton respondInButton">DISAGREEMENT</div>
 		</div><!--END OF respondBox DIV-->
 	</div><!--END OF respondBlackout DIV-->
 
 	<div class="viewTopicBlackout blackout">
 		<div class="viewTopicBox">
-			<div class="viewTopic"><?php 
-			if ($_GET['rT'] == 'MT'){
-				echo $db->query("SELECT TOPIC FROM main_topic WHERE QUEUE_NUM=0")->fetch_row[0];
-			} elseif ($_GET['rT'] == 'P'){
+			<div class="viewTopic"><?php
 
-			} elseif ($_GET['rT'] == 'S'){
+			////////////   RESPOND PAGE   /////////////
+			if (isset($_SESSION['rT']) && strpos($_SERVER['REQUEST_URI'], 'respond')){
+				if ($_SESSION['rT'] === '"mT"'){
+					echo ($db->query("SELECT TOPIC FROM main_topic WHERE QUEUE_NUM='0'")->fetch_row()[0]);
+				} elseif ($_SESSION['rT'] == '"P"'){
 
+				} elseif ($_SESSION['rT'] == '"S"'){
+
+				}
 			}
 			?></div>
 			
-			<div class="viewTopicButton">Close</div>
+			<div class="submitPost">SubmitPost</div>
 		</div><!--END OF viewTopicBox DIV-->
 	</div><!--END OF viewTopicBlackout DIV-->
 
