@@ -27,14 +27,14 @@
 		</div>
 		<div class="respondBox">
 			<span>Respond in:</span>
-			<div onclick="window.location = 'respond.php?rS=A'" class="agreeButton respondInButton">AGREEMENT</div>
-			<div onclick="window.location = 'respond.php?rS=N'" class="neutralButton respondInButton">NEUTRALITY</div>
-			<div onclick="window.location = 'respond.php?rS=D'" class="disagreeButton respondInButton">DISAGREEMENT</div>
+			<div onclick="window.location = 'respond.php?rS=0'" class="agreeButton respondInButton">AGREEMENT</div>
+			<div onclick="window.location = 'respond.php?rS=1'" class="neutralButton respondInButton">NEUTRALITY</div>
+			<div onclick="window.location = 'respond.php?rS=2'" class="disagreeButton respondInButton">DISAGREEMENT</div>
 		</div><!--END OF respondBox DIV-->
 	</div><!--END OF respondBlackout DIV-->
 
 	<div class="viewTopicBlackout blackout">
-		<div class="viewTopicBox">
+		<div class="viewTopicBox blankView">
 			<div class="viewTopic"><?php
 
 			////////////   RESPOND PAGE   /////////////
@@ -48,6 +48,7 @@
 				}
 			}
 			?></div>
+			<div class="reviewContent"></div>
 			
 			<div class="submitPost">SubmitPost</div>
 		</div><!--END OF viewTopicBox DIV-->

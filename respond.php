@@ -8,14 +8,12 @@ require "inc/requires.inc.php";
 	<div class="respondSubjectButton">View Topic</div>
 	<span>I <?php
 		if (isset($_GET['rS'])){
-			if ($_GET['rS'] == 'A'){
-				$_SESSION['rS'] = '"'.$_GET['rS'].'"';
+			$_SESSION['rS'] = '"'.$_GET['rS'].'"';
+			if ($_GET['rS'] == '0'){
 				echo "agree";
-			} elseif ($_GET['rS'] == 'N'){
-				$_SESSION['rS'] = '"'.$_GET['rS'].'"';
+			} elseif ($_GET['rS'] == '1'){
 				echo "am neutral";
-			} elseif ($_GET['rS'] == 'D'){
-				$_SESSION['rS'] = '"'.$_GET['rS'].'"';
+			} elseif ($_GET['rS'] == '2'){
 				echo "disagree";
 			}
 		}

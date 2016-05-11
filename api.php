@@ -11,12 +11,11 @@ function eD($data, $newRequest){
 
 $data = "";
 if (strpos($_SESSION['workingPage'], 'respond')){
-	// $data = eD($data, $_GET['rS']);
-
+	/////////   ADD DATA FROM RESPONSE PAGE   ////////////////
 	$data = eD($data,'"rS":'.$_SESSION['rS'].',"rT":'.$_SESSION['rT']);
 }
 
-$data = ed($data,'"login":'.$_COOKIE['loggedIn']);
+$data = eD($data,'"login":'.$_COOKIE['loggedIn']);
 $data = "{".$data;
 $data .= "}";
 echo $data;

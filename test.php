@@ -27,7 +27,20 @@ try {
 } catch (exception $e){
 	$error = $e->getMessage();
 }
-var_dump($_POST);
+// var_dump($_POST);
+$query = "SELECT post.ID FROM post JOIN main_topic ON post.MAIN_ID = main_topic.ID";
+if ($db->query($query) == false){
+	echo "FALSE";
+} elseif ($db->query($query) == true) {
+	echo "TRUE<br>";
+	$result = $db->query($query);
+	for ($i=0; $i < $result->num_rows ; $i++){
+		echo "<pre>";
+		var_dump($result->fetch_row());
+		echo "</pre>";
+}
+}
+
 
 ?>
 

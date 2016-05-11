@@ -396,7 +396,7 @@ body {
     top: 50%;
     left: 50%;
     transform: translate(-50%, -50%); }
-    .viewTopicBlackout .viewTopicBox .viewTopic {
+    .viewTopicBlackout .viewTopicBox .viewTopic, .viewTopicBlackout .viewTopicBox .reviewContent {
       font-size: 2vw;
       max-height: 60vh;
       overflow-Y: auto; }
@@ -425,7 +425,6 @@ body {
   top: 6vw;
   margin-bottom: 4vw; }
   .post .statement {
-    height: 6.6vw;
     margin-bottom: 0.8vw; }
     .post .statement .statementRatingBox {
       display: inline-block;
@@ -445,18 +444,17 @@ body {
         height: 20%;
         background-color: #c93e3c; }
     .post .statement .statementContentBox {
+      position: relative;
       display: inline-block;
       vertical-align: top;
       font-size: 0;
-      max-width: 99%; }
+      width: 99%; }
       .post .statement .statementContentBox .statementContent {
-        position: absolute;
         font-size: 1.5vw;
         border: 0.3vw solid black;
         background-color: white;
         padding: 0.5vw 1.5vw;
-        margin-right: 0.7vw;
-        height: 5.2vw; }
+        word-wrap: break-word; }
       .post .statement .statementContentBox .statementBlackout {
         display: none;
         position: absolute;
@@ -671,6 +669,24 @@ body {
       transform: rotate(-90deg) scaleY(0.5); }
     .sidebarBox .sidebarShowing .sidebarShowingNext .sidebarShowingArrow {
       transform: rotate(90deg) scaleY(0.5); }
+  .sidebarBox .sidebarConfirmBox {
+    display: none;
+    padding: 0.5vw 1vw; }
+    .sidebarBox .sidebarConfirmBox .sidebarConfirmButton {
+      background-color: #6ad060;
+      text-align: center;
+      font-size: 1.3vw;
+      font-weight: bold;
+      border: 0.1vw solid black;
+      border-radius: 0.5vw;
+      padding: 0.3vw 0vw;
+      margin-bottom: 0.5vw; }
+    .sidebarBox .sidebarConfirmBox .sidebarConfirmButton:hover {
+      cursor: pointer; }
+    .sidebarBox .sidebarConfirmBox .sidebarConfirmMTButton {
+      background-color: #235af9; }
+    .sidebarBox .sidebarConfirmBox .sidebarConfirmRButton {
+      background-color: #8c8c8c; }
 
 .rateBlackout {
   display: none;

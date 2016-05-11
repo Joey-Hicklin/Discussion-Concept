@@ -555,7 +555,7 @@ body{
 		left: 50%;
 		transform: translate(-50%, -50%);
 
-		.viewTopic{
+		.viewTopic, .reviewContent{
 			font-size: 2vw;
 			max-height: 60vh;
 			overflow-Y: auto;
@@ -595,7 +595,7 @@ body{
 	margin-bottom: 4vw;
 
 	.statement{
-		height: 6.6vw;
+		// height: 6.6vw;
 		margin-bottom: 0.8vw;
 
 		.statementRatingBox{
@@ -624,19 +624,18 @@ body{
 			}
 		}
 		.statementContentBox{
+			position: relative;
 			display: inline-block;
 			vertical-align: top;
 			font-size: 0;
-			max-width: 99%;
+			width: 99%;
 
 			.statementContent{
-				position: absolute;
 				font-size: 1.5vw;
 				border: 0.3vw solid black;
 				background-color: white;
 				padding: 0.5vw 1.5vw;
-				margin-right: 0.7vw;
-				height: 5.2vw;
+				word-wrap: break-word;
 
 				span{
 					// vertical-align: middle;
@@ -785,6 +784,9 @@ body{
 
 //////////////////////////////////   VIEW SIDEBAR   /////////////////////////
 
+.inactive{
+	// left:-15.1vw;
+}
 .sidebarBox{
 	position: fixed;
 	background-color: white;
@@ -981,6 +983,33 @@ body{
 			.sidebarShowingArrow{
 				transform: rotate(90deg) scaleY(0.5);
 			}
+		}
+	}
+	.sidebarConfirmBox{
+		display: none;
+		padding: 0.5vw 1vw;
+
+		.sidebarConfirmButton{
+			background-color: $green;
+			text-align: center;
+			font-size: 1.3vw;
+			font-weight: bold;
+			border: 0.1vw solid black;
+			border-radius: 0.5vw;
+			padding: 0.3vw 0vw;
+			margin-bottom: 0.5vw;
+		}
+		.sidebarConfirmButton:hover{
+			cursor: pointer;
+		}
+		.sidebarConfirmMTButton{
+			background-color: $blue;
+		}
+		.sidebarConfirmCLButton{
+			
+		}
+		.sidebarConfirmRButton{
+			background-color: $dGrey;
 		}
 	}
 }
