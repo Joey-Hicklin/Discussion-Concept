@@ -39,7 +39,7 @@ $(document).ready(function(){
 			method: 'GET',
 			dataType: 'JSON'
 		}).done(function(data,success){
-			console.log(data);
+			// console.log(data);
 			var loggedIn = data.login;
 			if (window.location.pathname.indexOf("respond")>-1){
 				var rT = data.rT;
@@ -51,7 +51,7 @@ $(document).ready(function(){
 					method: 'POST',
 					data: {'rT':rT,'rS':rS,"postContent":postContent}
 				}).done(function(data,success){
-					console.log(data);
+					// console.log(data);
 					window.onbeforeunload = null;
 					switch (rT){
 						case 'mT':
@@ -281,9 +281,10 @@ $(document).ready(function(){
 			});
 
 			/////////////// DEFAULT LANDING ON VIEW PAGE ////////////////////////
-			$layerT = 1;
-			$('#view_content').html(sendViewData($view, $viewIn, $sortA, $displayN, $layerT));
-
+			if (window.location.pathname.indexOf("view")>-1){
+				$layerT = 1;
+				$('#view_content').html(sendViewData($view, $viewIn, $sortA, $displayN, $layerT));
+			}
 		}); // end of .done function
 	} // end of getData function
 	getData();

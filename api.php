@@ -10,8 +10,10 @@ function eD($data, $newRequest){
 }
 
 $data = "";
+
+//// BEFORE USING SESSION DATA, SET SESSION WITH AJAX UPON BUTTON-CLICK
+
 if (strpos($_SESSION['workingPage'], 'respond')){
-	/////////   ADD DATA FROM RESPONSE PAGE   ////////////////
 	$data = eD($data,'"rS":'.$_SESSION['rS'].',"rT":'.$_SESSION['rT']);
 }
 

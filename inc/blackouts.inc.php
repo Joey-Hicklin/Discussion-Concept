@@ -37,7 +37,13 @@
 		<div class="viewTopicBox blankView">
 			<div class="viewTopic"><?php
 
-			////////////   RESPOND PAGE   /////////////
+		 ///////////////////////////////////////////   RESPOND PAGE   /////////////////////////////////////
+
+			////////////   TEMPORARY   ///////////////
+			$_SESSION['rT'] = '"mT"'; //// TEMPORARY
+			////////////   TEMPORARY   //////////////
+
+
 			if (isset($_SESSION['rT']) && strpos($_SERVER['REQUEST_URI'], 'respond')){
 				if ($_SESSION['rT'] === '"mT"'){
 					echo ($db->query("SELECT TOPIC FROM main_topic WHERE QUEUE_NUM='0'")->fetch_row()[0]);

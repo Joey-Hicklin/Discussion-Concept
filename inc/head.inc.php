@@ -1,5 +1,4 @@
 <?php 
-session_start();
 function head($title){ ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -10,6 +9,7 @@ function head($title){ ?>
 	<link href='https://fonts.googleapis.com/css?family=Orbitron' rel='stylesheet' type='text/css'>
 	<script src="https://ajax.googleapis.com/ajax/libs/jquery/2.2.2/jquery.min.js"></script>
 	<!-- script.js is below the blackouts -->
+	<?php session_start(); ?>
 </head>
 <body>
 <?php } ?>
