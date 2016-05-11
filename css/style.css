@@ -671,7 +671,8 @@ body {
       transform: rotate(90deg) scaleY(0.5); }
   .sidebarBox .sidebarConfirmBox {
     display: none;
-    padding: 0.5vw 1vw; }
+    padding: 0.5vw 1vw;
+    background-color: white; }
     .sidebarBox .sidebarConfirmBox .sidebarConfirmButton {
       background-color: #6ad060;
       text-align: center;

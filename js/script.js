@@ -1,8 +1,8 @@
-jQuery(function($){
+jQuery(function($) {
 	function menuToggle(e, f) {	// declare your click variable and its class-swapping parent
 		$(e).on('click', function(g) {	// when the click variable is clicked... 
 			//g.preventDefault();	// if it's an anchor element, prevent default behavior (e.g., don't go to the href)
-			var span = $(this),	// this is the click variable
+			var span = $(this);	// this is the click variable
 				spanParent = span.closest(f);	// this is the closest (hierarchical) class-swapping parent
 			if (spanParent.hasClass('inactive')) {	// if the parent HAS the 'active' class when the click variable is clicked...
 				spanParent.removeClass('inactive');	// remove the 'active' class from the parent
@@ -28,7 +28,6 @@ jQuery(function($){
 		});
 	}
 $(document).ready(function(){
-
 
 	menuToggle($('.sidebarTab'),$('.sidebarBox'));
 
@@ -69,15 +68,16 @@ $(document).ready(function(){
 			}
 			function sendViewData($view, $viewIn, $sortA, $displayN, $layerT){
 				var jqxhr = $.ajax({
-					url: "view.php",
+					url: "view_content.php",
 					method: 'POST',
 					data: {'V':$view,'VI':$viewIn,'S':$sortA,'D':$displayN,'L':$layerT}
 				}).done(function(data,success){
-					console.log(data);
+					// console.log(data);
+					$('#view_content').html(data);
 				});
 			}
 			
-		 /////////////////   BUTTON DIRECTIONS   //////////////
+		 //////////////////////////////////   BUTTON DIRECTIONS   ////////////////////////////
 		 	$('.logOutButton').click(function(event) {
 		 		window.location = "logout.php";
 		 	});
@@ -86,18 +86,59 @@ $(document).ready(function(){
 		 		window.location = "sign_up.php";
 		 	});
 
+
+		 ////////////////////////////////   VIEW SIDEBAR   ////////////////////////////////
+
+		 	$view = ($('#sidebarView').val());  ///// set variables for sidebar selections
+		 	$viewIn = ($('#sidebarIn').val()); /////
+		 	$sortA = ($('#sortAmount').val()); /////
+		 	$displayN = ($('#displayNum').val()); //
+
+		 	$reset = 0; // start sensing for changes in selection
+
 		 	$('select').change(function(event) {
-		 		$('.sidebarShowing').hide();
-		 		$('.sidebarConfirmBox').show();
+
+		 		if ($reset == 0){ // if this is the first change
+
+		 			$reset = 1; // note that it is the first change
+		 			$Rview = ($('#sidebarView').val()); ////// set reset return values
+				 	$RviewIn = ($('#sidebarIn').val()); /////
+				 	$RsortA = ($('#sortAmount').val()); /////
+				 	$RdisplayN = ($('#displayNum').val()); //
+		 		}
+
+		 		$('.sidebarShowing').hide(); // hide the display page results
+
+		 		$('.sidebarConfirmBox').show(); // show the 2 search buttons and 1 reset button
+		 	});
+
+
+		 	$('.sidebarConfirmCLButton').click(function(event) {
+		 		$layerT = 0; //---------------------------// save selection for database query
+		 		$view = ($('#sidebarView').val()); //// collect current selections
+			 	$viewIn = ($('#sidebarIn').val()); ///
+			 	$sortA = ($('#sortAmount').val()); ////
+			 	$displayN = ($('#displayNum').val()); //
+			 	$('.sidebarConfirmBox').hide(); // hide 3 buttons
+		 		$('.sidebarShowing').show(); // show display page results
+		 		sendViewData($view, $viewIn, $sortA, $displayN, $layerT); // send query to PHP
 		 	});
 
 		 	$('.sidebarConfirmMTButton').click(function(event) {
-		 		$layerT = 1; // main topic
-		 		sendViewData($view, $viewIn, $sortA, $displayN, $layerT);
+		 		$layerT = 1; //-------------------// save selection for database query
+		 		$view = ($('#sidebarView').val()); //// collect current selections
+			 	$viewIn = ($('#sidebarIn').val()); ///
+			 	$sortA = ($('#sortAmount').val()); ////
+			 	$displayN = ($('#displayNum').val()); //
+		 		$('.sidebarConfirmBox').hide(); // hide 3 buttons
+		 		$('.sidebarShowing').show(); // show display page results
+		 		sendViewData($view, $viewIn, $sortA, $displayN, $layerT); // send query to PHP
 		 	});
 
-		 	//////   STATEMENT CLONER   //////
-		 	$('.cloneButton').click(function(event) {
+		 ////////////////////////////////////   STATEMENT CLONER   ////////////////////////////
+
+		 	$('.cloneButton').click(function(){
+
 		 		if($('.statementInputBox').length < 5){
 			 		$('.cloneBox').clone(true,true).insertAfter('.cloneBox');
 			 		$('.cloneButton').eq(0).removeClass('cloneButton').hide();
@@ -120,7 +161,8 @@ $(document).ready(function(){
 		 		$('.viewTopicBlackout').show();
 		 	});
 
-		 ////////////////   REVIEW RESPONSE STATEMENTS   /////////////////
+		 /////////////////////////   REVIEW RESPONSE STATEMENTS   ///////////////////////////////////
+
 		 	$('.reviewPostButton').click(function(event) {
 		 		var respondStatements = this.form.elements['statements[]'];
 		 		$('.blackout').hide();
@@ -128,14 +170,15 @@ $(document).ready(function(){
 		 			"font-size":"2vw",
 		 			"text-align":"left"
 		 		});
-		 		if (respondStatements.length == null){  // If there is only 1 statement, so it is not an array
+
+		 		if (respondStatements.length == null){  // If there is only 1 statement, it is not an array
 		 			$('<p>').addClass('statementReview').append(respondStatements.value).appendTo('.reviewContent');
 		 		} else {
 		 			for (var i = 0; i < respondStatements.length; i++) {
-			 			console.log(respondStatements[i].value.length);
 			 			$('<p>').addClass('statementReview').append(respondStatements[i].value).appendTo('.reviewContent');
 			 		}
 		 		}
+
 		 		$('.submitPost').css("display","inline-block");
 		 		$('.reviewContent').show();
 		 		$('.viewTopic').hide();
@@ -143,7 +186,7 @@ $(document).ready(function(){
 
 		 		$('.submitPost').click(function(event) {
 			 		var postContent = "";
-			 		if (respondStatements.length == null){  // If there is only 1 statement, so it is not an array
+			 		if (respondStatements.length == null){  // If there is only 1 statement, it is not an array
 			 			postContent = respondStatements.value;
 			 		} else {
 				 		for (var i = 0; i < respondStatements.length; i++) {
@@ -158,21 +201,7 @@ $(document).ready(function(){
 			 	});
 		 	});
 
-		 /////////////   VIEW SIDEBAR   ///////////////
-
-		 	$view = ($('#sidebarView').val());
-		 	$viewIn = ($('#sidebarIn').val());
-		 	$sortA = ($('#sortAmount').val());
-		 	$displayN = ($('#displayNum').val());
-
-		 	$('.sidebarConfirmMTButton').click(function(event) {
-		 		$layerT = 1;
-		 	});
-		 	$('.sidebarConfirmCLButton').click(function(event) {
-		 		$layerT = 0;
-		 	});
-
-         /////////////   STYLING   ///////////////////
+         /////////////////////////////////   STYLING   //////////////////////////////////////
 
 			$('.optionsToolbar').click(function() {
 				$('.blackout').hide();
@@ -193,8 +222,9 @@ $(document).ready(function(){
 				$('.blackout').hide();
 			});			
 
+		 ////////////////////////////////// RESPONSE PAGE ///////////////////////////////////////////
 			if (window.location.pathname.indexOf("respond")>-1){
-				window.onbeforeunload = function(){ return 'YOU WILL LOSE ALL INFORMATION YOU HAVE ENTERED!' }
+				window.onbeforeunload = function(){ return 'YOU WILL LOSE ALL INFORMATION YOU HAVE ENTERED!' };
 				switch(rT){
 					case "mT":
 						$('.viewTopic').css({
@@ -249,6 +279,10 @@ $(document).ready(function(){
 			$('.viewTopicBox').click(function(event) {
 				event.stopPropagation();
 			});
+
+			/////////////// DEFAULT LANDING ON VIEW PAGE ////////////////////////
+			$layerT = 1;
+			$('#view_content').html(sendViewData($view, $viewIn, $sortA, $displayN, $layerT));
 
 		}); // end of .done function
 	} // end of getData function
