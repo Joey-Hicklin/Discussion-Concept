@@ -25,7 +25,7 @@ if($db->query("INSERT INTO post (USER_ID, MAIN_ID, AFFILIATION".$replyOf.") VALU
 	$statements = str_ireplace("'", "''",$_POST['postContent']); // escape single quotes for SQL statement
 	$statements = explode("~^", $statements); // split into individual statements
 	for ($i=0; $i < count($statements); $i++) {
-		if ($db->query("INSERT INTO statement (POST_ID, CONTENT) VALUES ('".$postID."','".$statements[$i]."')")) {
+		if ($db->query("INSERT INTO statement (POST_ID, CONTENT) VALUES ('".$postID."','".htmlspecialchars($statements[$i])."')")) {
 			echo "\nSTATEMENT ".$i." LINK SUCCESS!!";
 		} else{
 			echo $db->error;

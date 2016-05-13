@@ -6,7 +6,10 @@
 		--><div class="toolbarSignUp tls">Sign Up</div><!--
 		--><a class="mainToolbar" href="#">MAIN</a><!--
 		--><div class="layerBox"><!--
-			--><div class="layerButton">1</div><!-- 12 buttons MAX
+			--><div class="layerButton originalLayer">0<!--
+				--><div class="layerID"></div><!--
+				--><div class="layerContent"></div><!--
+			--></div><!-- 12 buttons MAX
 		--></div><!--
 		--><a class="optionsToolbar" href="#">OPTIONS</a>
 	</div><!--END OF toolbar DIV-->

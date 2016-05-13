@@ -27,11 +27,15 @@ jQuery(function($) {
 			}
 		});
 	}
-$(document).ready(function(){
+	function htmlspecialchars(str) {
+	  return str.replace('&', '&amp;').replace('"', '&quot;').replace("'", '&#039;').replace('<', '&lt;').replace('>', '&gt;');
+	}
+ $(document).ready(function(){
 
 	menuToggle($('.sidebarTab'),$('.sidebarBox'));
 
-/////////////  AJAX   //////////////////
+
+ ///////////////////////////////////////////////  AJAX   ///////////////////////////////////////////
 
 	function getData(){
 		var jqxhr = $.ajax({
@@ -72,12 +76,54 @@ $(document).ready(function(){
 					method: 'POST',
 					data: {'V':$view,'VI':$viewIn,'S':$sortA,'D':$displayN,'L':$layerT}
 				}).done(function(data,success){
-					// console.log(data);
+
+				 ///////////////////////////////////   VIEW CONTENT   ////////////////////////////////////
+
+
 					$('#view_content').html(data);
+					$('.post').find(".statementContent:first").css("border-top","0.2vw solid black");	
+					$('.post').find(".statementContent:last").css("border-bottom","0.2vw solid black");	
+					$('.post').find('.statement:last').css({
+						"margin-bottom":"0.8vw",
+						"border-bottom":"none"
+					});
+
+					$('.statementViewButton').click(function(event) {
+				 		statementID = $(this).parents('.statement').find('.statementID').html();
+				 		statementContent = $(this).parents('.statement').find('.statementContent span').html();
+				 		
+				 	});
+
+					$('.post').each(function(index, content) {
+						$(this).contents('.statement').not(':first').hide();
+
+						if ($(this).contents('.statement').length > 1){
+							buttons = $(this).contents('.postButton');
+							ratings = $(this).contents('.postRatingBox');
+							readMore = $(this).contents('.postReadMore');
+
+							readMore.click(function(event) {
+								$(this).parent('.post').contents('.statement').not(':first').slideDown(1000);
+								ratings.animate({"margin-top": "1vw",}, 500, function() {
+									buttons.css({
+										display: 'inline-block',
+										opacity: '0'
+									});
+									readMore.fadeOut(500);
+									buttons.animate({opacity:"1"}, 500);
+								});
+							});
+						} else{
+							$(this).contents('.postReadMore').hide();
+							$(this).contents('.postRatingBox').hide();
+						}
+					});
 				});
 			}
 			
-		 //////////////////////////////////   BUTTON DIRECTIONS   ////////////////////////////
+
+		 //////////////////////////////////   BUTTON DIRECTIONS   ///////////////////////////////////
+
 		 	$('.logOutButton').click(function(event) {
 		 		window.location = "logout.php";
 		 	});
@@ -87,7 +133,9 @@ $(document).ready(function(){
 		 	});
 
 
-		 ////////////////////////////////   VIEW SIDEBAR   ////////////////////////////////
+
+
+		 ////////////////////////////////   VIEW SIDEBAR   /////////////////////////////////////////
 
 		 	$view = ($('#sidebarView').val());  ///// set variables for sidebar selections
 		 	$viewIn = ($('#sidebarIn').val()); /////
@@ -135,7 +183,7 @@ $(document).ready(function(){
 		 		sendViewData($view, $viewIn, $sortA, $displayN, $layerT); // send query to PHP
 		 	});
 
-		 ////////////////////////////////////   STATEMENT CLONER   ////////////////////////////
+		 ////////////////////////////////////   STATEMENT CLONER   ////////////////////////////////
 
 		 	$('.cloneButton').click(function(){
 
@@ -172,10 +220,10 @@ $(document).ready(function(){
 		 		});
 
 		 		if (respondStatements.length == null){  // If there is only 1 statement, it is not an array
-		 			$('<p>').addClass('statementReview').append(respondStatements.value).appendTo('.reviewContent');
+		 			$('<p>').addClass('statementReview').append(htmlspecialchars(respondStatements.value)).appendTo('.reviewContent');
 		 		} else {
 		 			for (var i = 0; i < respondStatements.length; i++) {
-			 			$('<p>').addClass('statementReview').append(respondStatements[i].value).appendTo('.reviewContent');
+			 			$('<p>').addClass('statementReview').append(htmlspecialchars(respondStatements[i].value)).appendTo('.reviewContent');
 			 		}
 		 		}
 
@@ -201,7 +249,7 @@ $(document).ready(function(){
 			 	});
 		 	});
 
-         /////////////////////////////////   STYLING   //////////////////////////////////////
+         /////////////////////////////////////////   STYLING   ////////////////////////////////////////////
 
 			$('.optionsToolbar').click(function() {
 				$('.blackout').hide();
@@ -220,9 +268,12 @@ $(document).ready(function(){
 			});
 			$('.blackout').click(function(){
 				$('.blackout').hide();
-			});			
+			});
+			
 
-		 ////////////////////////////////// RESPONSE PAGE ///////////////////////////////////////////
+
+		 /////////////////////////////////////   RESPONSE PAGE   ///////////////////////////////////////////
+
 			if (window.location.pathname.indexOf("respond")>-1){
 				window.onbeforeunload = function(){ return 'YOU WILL LOSE ALL INFORMATION YOU HAVE ENTERED!' };
 				switch(rT){

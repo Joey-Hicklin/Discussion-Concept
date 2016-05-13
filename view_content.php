@@ -1,14 +1,17 @@
 <?php 
 require "inc/connection.inc.php";
-function statement($content){ ?>
+function statement($content, $statementID){ ?>
 	<div class="statement"><!--
-		--><div class="statementRatingBox"><!--
-			--><div class="statementRating"></div><!--
-			--><div class="statementRating"></div><!--
-			--><div class="statementRating"></div><!--
-		--></div><!--END OF statementRatingBox DIV
-		--><div class="statementContentBox">
-			<div class="statementContent"><span><?php echo $content; ?></span></div><!--END OF statementContent DIV-->
+		--><div class="statementID"><?php echo $statementID; ?></div><!--
+		--><div class="statementRatingSpace"><!--
+		--></div><!--
+		--><div class="statementContentBox"><!--
+			--><div class="statementRatingBox"><!--
+				--><div class="statementRating"></div><!--
+				--><div class="statementRating"></div><!--
+				--><div class="statementRating"></div><!--
+			--></div><!--END OF statementRatingBox DIV
+			--><div class="statementContent"><span><?php echo $content; ?></span></div><!--END OF statementContent DIV-->
 			<div class="statementBlackout">
 				<div class="statementRateButton statementButton">RATE</div>
 				<div class="statementViewButton statementButton">VIEW
@@ -23,15 +26,17 @@ function statement($content){ ?>
 
 function post($postID, $db){ ?>
 <div class="post">
+	<div class="postID"><?php echo $postID ?></div>
 	<?php 
 
 	////  Use this area to differentiate viewing POST or STATEMENTS
 	////  For POSTS do what's listed below
 	////  For STATEMENTS change the $statementNum to 1, then have a mechanism that alters the sort order, so the stats on the statements are what is being sorted as the query is returned.
-		$statements = $db->query("SELECT CONTENT FROM statement WHERE POST_ID='".$postID."'");
+		$statements = $db->query("SELECT statement.CONTENT, statement.ID FROM statement WHERE statement.POST_ID='".$postID."'");
 
 		for ($i=0; $i < $statements->num_rows; $i++) {
-			statement($statements->fetch_row()[0]);
+			$statementResponse = $statements->fetch_row();
+			statement($statementResponse[0],$statementResponse[1]);
 			}		
 	 ?>
 	<div class="postRatingBox"><!--
@@ -40,10 +45,10 @@ function post($postID, $db){ ?>
 		--><div class="postRating"></div><!--
 	--></div><!--END OF postRatingBox DIV-->
 	<div class="postRateButton postButton">RATE</div>
-		<div class="postViewButton postButton">VIEW
-			<div class="postResponseNum">1</div>
-		</div><!--END OF postView DIV-->
-		<div class="postRespondButton postButton">RESPOND</div>
+	<div class="postViewButton postButton">VIEW
+		<div class="postResponseNum">1</div>
+	</div><!--END OF postView DIV-->
+	<div class="postRespondButton postButton">RESPOND</div>
 	<div class="postReadMore">Read More...</div>
 </div><!--END OF post DIV-->
 <?php } //END OF post FUNCTION ?>

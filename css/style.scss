@@ -587,41 +587,28 @@ body{
 	position: relative;
 	background-color: $lGrey;
 	width: 80vw;
-	left: 58%;  /////////////////////////   +8% to this for sidebar slide
+	left: 58%;
 	transform: translateX(-50%);
 	padding: 0.7vw;
 	border-radius: 0.6vw;
-	top: 6vw;  ///////////////////   test to see if FIRST-CHILD needs to be different
+	top: 6vw;
 	margin-bottom: 4vw;
 
+	.postID{
+		display: none;
+	}
 	.statement{
-		// height: 6.6vw;
-		margin-bottom: 0.8vw;
+		border-bottom: 0.8vw solid white;
 
-		.statementRatingBox{
+		.statementID{
+			display: none;
+		}
+		.statementRatingSpace{
 			display: inline-block;
 			vertical-align: top;
 			font-size: 0;
-			// float:left;
 			width: 1%;
-			height: 100%;
 
-			.statementRating{
-				width: 100%;
-
-			}
-			.statementRating:nth-child(3){
-				height: 50%;
-				background-color: $green;
-			}
-			.statementRating:nth-child(2){
-				height: 30%;
-				background-color: $blue;
-			}
-			.statementRating:nth-child(1){
-				height: 20%;
-				background-color: $red;
-			}
 		}
 		.statementContentBox{
 			position: relative;
@@ -630,11 +617,35 @@ body{
 			font-size: 0;
 			width: 99%;
 
+			.statementRatingBox{
+				position: absolute;
+				left: -0.8vw;
+				width: 1%;
+				height: 100%;
+
+				.statementRating{
+					width: 100%;
+
+				}
+				.statementRating:nth-child(3){
+					height: 50%;
+					background-color: $green;
+				}
+				.statementRating:nth-child(2){
+					height: 30%;
+					background-color: $blue;
+				}
+				.statementRating:nth-child(1){
+					height: 20%;
+					background-color: $red;
+				}
+			}
+
 			.statementContent{
-				font-size: 1.5vw;
-				border: 0.3vw solid black;
+				font-size: 1.7vw;
+				border-right: 0.2vw solid black;
 				background-color: white;
-				padding: 0.5vw 1.5vw;
+				padding: 0.5vw 1vw;
 				word-wrap: break-word;
 
 				span{
@@ -645,7 +656,7 @@ body{
 			.statementBlackout{
 				display: none;
 				position: absolute;
-				background-color: rgba(#000,0.9);
+				background-color: rgba(#000,0.1);
 				height: 100%;
 				width: 100%;
 				top: 0;
@@ -654,12 +665,11 @@ body{
 
 				.statementButton{
 					position: absolute;
-					font-size: 3vw;
+					font-size: 2vw;
 					background-color: $dGrey;
 					border: 0.1vw solid white;
 					border-radius: 0.8vw;
-					height: 3.6vw;
-					padding: 0.5vw 1.5vw;
+					padding: 0.3vw 1vw;
 				}
 				.statementButton:hover{
 					cursor: pointer;
@@ -677,11 +687,13 @@ body{
 					.statementResponseNum{
 						display: inline-block;
 						vertical-align: top;
+						font-size: 1.5vw;
 						background-color: $red;
 						color: white;
 						border: 0.1vw solid black;
 						border-radius: 100%;
-						padding: 0 1vw;
+						padding: 0 0.6vw;
+						margin-top: 0.194vw;
 
 					}
 				}
@@ -698,18 +710,21 @@ body{
 			.statementBlackout{
 				display: block;
 			}
+			.statementContent{
+				-webkit-filter: blur(1.5px);
+			}
 		}
 	}
 	.postButton{
 		display: none;
-		// display: inline-block;
 		position: relative;
 		vertical-align: bottom;
 		font-size: 3vw;
 		background-color: $dGrey;
 		border: 0.1vw solid black;
 		border-radius: 0.8vw;
-		padding: 0.5vw 1.5vw;
+		padding: 0vw 1.5vw;
+		margin-top: 0.7vw;
 		margin-left: 3vw;
 
 	}
@@ -724,10 +739,13 @@ body{
 		.postResponseNum{
 			display: inline-block;
 			background-color: $red;
+			font-size: 2vw;
+			vertical-align: top;
+			margin-top: 0.5vw;
 			color: white;
 			border: 0.1vw solid black;
 			border-radius: 100%;
-			padding: 0 1vw;
+			padding: 0 0.7vw;
 
 		}
 	}
