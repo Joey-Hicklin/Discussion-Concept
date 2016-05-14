@@ -4,7 +4,7 @@
 if (!isset($_SESSION['workingPage'])){
 	$_SESSION['workingPage'] = "/php2/Final%20Project%20-%20Discussion%20App/main_topic.php";
 	
-} elseif (strpos($_SERVER['REQUEST_URI'], 'sign_up') === false){
+} elseif (strpos($_SERVER['REQUEST_URI'], 'sign_up') === false  && strpos($_SERVER['REQUEST_URI'], 'api') === false){
 		$_SESSION['workingPage'] = $_SERVER['REQUEST_URI'];
 }
 

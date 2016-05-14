@@ -23,7 +23,7 @@
 
 	<div class="respondBlackout blackout">
 		<div class="respondTopicBox">
-			<div class="respondTopic"><!--LOGIC-->College should be paid for by taxpayers.</div>
+			<div class="respondTopic"></div>
 		</div>
 		<div class="respondBox">
 			<span>Respond in:</span>
@@ -39,18 +39,18 @@
 
 		 ///////////////////////////////////////////   RESPOND PAGE   /////////////////////////////////////
 
-			////////////   TEMPORARY   ///////////////
-			$_SESSION['rT'] = '"mT"'; //// TEMPORARY
-			////////////   TEMPORARY   //////////////
 
+			if (strpos($_SERVER['REQUEST_URI'], 'respond')){
 
-			if (isset($_SESSION['rT']) && strpos($_SERVER['REQUEST_URI'], 'respond')){
-				if ($_SESSION['rT'] === '"mT"'){
+				if (!isset($_GET['rT'])){
 					echo ($db->query("SELECT TOPIC FROM main_topic WHERE QUEUE_NUM='0'")->fetch_row()[0]);
-				} elseif ($_SESSION['rT'] == '"P"'){
-
-				} elseif ($_SESSION['rT'] == '"S"'){
-
+				} elseif ($_GET['rT'] == "P"){
+					$respondViewPost = $db->query("SELECT CONTENT FROM statement WHERE statement.POST_ID='".$_GET['id']."'");
+					for ($i=0; $i < $respondViewPost->num_rows ; $i++) { 
+						echo "<p>".$respondViewPost->fetch_row()[0]."</p>";
+					}
+				} elseif ($_GET['rT'] == "S"){
+					echo ($db->query("SELECT CONTENT FROM statement WHERE statement.ID='".$_GET['id']."'")->fetch_row()[0]);
 				}
 			}
 			?></div>

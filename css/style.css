@@ -55,8 +55,14 @@ body {
       font-size: 2vw;
       padding: 0.3vw 1vw;
       margin-left: 0.4vw; }
+      #toolbar .layerBox .layerButton .layerID {
+        display: none; }
+      #toolbar .layerBox .layerButton .layerContent {
+        display: none; }
     #toolbar .layerBox .layerButton:hover {
       cursor: pointer; }
+    #toolbar .layerBox .originalLayer {
+      display: none; }
   #toolbar .optionsToolbar {
     position: fixed;
     top: 0.5vw;
@@ -291,7 +297,10 @@ body {
     max-width: 50vw;
     transform: translate(-50%, -50%); }
     .respondBlackout .respondTopicBox .respondTopic {
-      font-size: 7vw; }
+      font-size: 7vw;
+      overflow: auto;
+      word-wrap: break-word;
+      max-height: 30vw; }
   .respondBlackout .respondBox {
     position: fixed;
     text-align: center;

@@ -3,12 +3,19 @@ require "inc/head.inc.php";
 head("NullSpeak - Respond");
 require "inc/requires.inc.php";
 ?>
-
+<?php 
+	if (isset($_GET['rT'])){
+		$_SESSION['rT'] = $_GET['rT'];
+	}
+	if (isset($_GET['id'])){
+		$_SESSION['id'] = $_GET['id'];
+	}
+ ?>
 <div class="respondSubjectBox">
 	<div class="respondSubjectButton">View Topic</div>
 	<span>I <?php
 		if (isset($_GET['rS'])){
-			$_SESSION['rS'] = '"'.$_GET['rS'].'"';
+			$_SESSION['rS'] = $_GET['rS'];
 			if ($_GET['rS'] == '0'){
 				echo "agree";
 			} elseif ($_GET['rS'] == '1'){

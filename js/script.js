@@ -43,12 +43,30 @@ jQuery(function($) {
 			method: 'GET',
 			dataType: 'JSON'
 		}).done(function(data,success){
-			// console.log(data);
+			console.log(data);
 			var loggedIn = data.login;
 			if (window.location.pathname.indexOf("respond")>-1){
-				var rT = data.rT;
-				var rS = data.rS;
+				var rT = data.rT; // rT = Response Type (Main Topic, Post or Statement)
+				var rS = data.rS; // rS = Response Style (Agree, Neutral, Disagree)
 			}
+			// function respondInfo(rT, ID){
+			// 	var jqxhr = $.ajax({
+			// 		url: 'respondInfo.php',
+			// 		type: 'GET',
+			// 		dataType: 'JSON'
+			// 	})
+			// 	.done(function() {
+			// 		console.log("success!");
+			// 		console.log(data);
+			// 	})
+			// 	.fail(function() {
+			// 		console.log("error");
+			// 	})
+			// 	.always(function() {
+			// 		console.log("respondInfo complete");
+			// 	});
+				
+			// }
 			function sendPostData(rS,rT,postContent){
 				var jqxhr = $.ajax({
 					url: "newPost.php",
@@ -81,36 +99,92 @@ jQuery(function($) {
 
 
 					$('#view_content').html(data);
-					$('.post').find(".statementContent:first").css("border-top","0.2vw solid black");	
-					$('.post').find(".statementContent:last").css("border-bottom","0.2vw solid black");	
+					$('.post').find(".statementContent:first").css("border-top","0.2vw solid black");
+					$('.post').find(".statementContent:last").css("border-bottom","0.2vw solid black");
 					$('.post').find('.statement:last').css({
 						"margin-bottom":"0.8vw",
 						"border-bottom":"none"
 					});
 
+				        /////////////////////////////   CREATE LAYER   ////////////////////////
+
+
 					$('.statementViewButton').click(function(event) {
 				 		statementID = $(this).parents('.statement').find('.statementID').html();
 				 		statementContent = $(this).parents('.statement').find('.statementContent span').html();
-				 		
+
+				 		nL = $('.originalLayer').clone(true, true);
+				 		nL.html($('.layerButton').length);
+				 		nL.removeClass('originalLayer');
+				 		$('.layerButton:last').after(nL);
+
+				 		cB = $('.layerButton:last');
+				 		$('<div>').addClass('layerID').html(statementID).appendTo(cB);
+				 		$('<div>').addClass('layerContent').html(statementContent).appendTo(cB);
+
+
 				 	});
+
+					    /////////////////////////   RESPOND BUTTON   ///////////////////////////
+
+					    $('.statementRespondButton').click(function(event) {
+					    	ID = $(this).closest('.statement').find('.statementID').html();
+					    	content = $(this).closest('.statementContentBox').find('.statementContent span').html();
+					    	$('.respondBlackout').show();
+					    	$('.respondBlackout').find('.respondTopic').html(content);
+					    	$('.respondTopic').css({
+					    		"font-size": '2.5vw'
+					    	});
+					    	$('.agreeButton').click(function(event) {
+					    		window.location = 'respond.php?rS=0&rT=S&id='+ID;
+					    	});
+					    	$('.neutralButton').click(function(event) {
+					    		window.location = 'respond.php?rS=1&rT=S&id='+ID;
+					    	});
+					    	$('.disagreeButton').click(function(event) {
+					    		window.location = 'respond.php?rS=2&rT=S&id='+ID;
+					    	});
+					    });
+
+					    $('.postRespondButton').click(function(event) {
+					    	ID = $(this).closest('.post').find('.postID').html();
+					    	$('.respondBlackout').show();
+					    	$('.respondBlackout').find('.respondTopic').html("");
+					    	$(this).closest('.post').find('.statement').each(function(index, el) {
+					    		$('<p>').html($(this).find('.statementContent span').html()).appendTo($('.respondBlackout').find('.respondTopic'));
+					    	});
+					    	$('.respondTopic').css({
+					    		"font-size": '2.5vw'
+					    	});
+					    	$('.agreeButton').click(function(event) {
+					    		window.location = 'respond.php?rS=0&rT=P&id='+ID;
+					    	});
+					    	$('.neutralButton').click(function(event) {
+					    		window.location = 'respond.php?rS=1&rT=P&id='+ID;
+					    	});
+					    	$('.disagreeButton').click(function(event) {
+					    		window.location = 'respond.php?rS=2&rT=P&id='+ID;
+					    	});
+					    });
+
+						////////////////////////   POST SLIDE DISPLAY   ////////////////////////
+
 
 					$('.post').each(function(index, content) {
 						$(this).contents('.statement').not(':first').hide();
 
 						if ($(this).contents('.statement').length > 1){
-							buttons = $(this).contents('.postButton');
-							ratings = $(this).contents('.postRatingBox');
-							readMore = $(this).contents('.postReadMore');
 
-							readMore.click(function(event) {
-								$(this).parent('.post').contents('.statement').not(':first').slideDown(1000);
-								ratings.animate({"margin-top": "1vw",}, 500, function() {
-									buttons.css({
+							$(this).contents('.postReadMore').click(function(event) {
+								parental = $(this).offsetParent('.post');
+								parental.contents('.statement').slideDown(1000);
+								parental.contents('.postRatingBox').animate({"margin-top": "1vw",}, 500, function() {
+									parental.contents('.postButton').css({
 										display: 'inline-block',
 										opacity: '0'
 									});
-									readMore.fadeOut(500);
-									buttons.animate({opacity:"1"}, 500);
+									parental.contents('.postReadMore').fadeOut(500);
+									parental.contents('.postButton').animate({opacity:"1"}, 500);
 								});
 							});
 						} else{
@@ -118,8 +192,9 @@ jQuery(function($) {
 							$(this).contents('.postRatingBox').hide();
 						}
 					});
-				});
-			}
+
+				}); // END OF .done function
+			} // END OF sendViewData
 			
 
 		 //////////////////////////////////   BUTTON DIRECTIONS   ///////////////////////////////////
@@ -131,9 +206,6 @@ jQuery(function($) {
 		 	$('.toolbarSignUp').click(function(event) {
 		 		window.location = "sign_up.php";
 		 	});
-
-
-
 
 		 ////////////////////////////////   VIEW SIDEBAR   /////////////////////////////////////////
 
@@ -286,6 +358,9 @@ jQuery(function($) {
 					case "P":
 						break;
 					case "S":
+						$('.viewTopic').css({
+							"text-align":"center"
+						});
 						break;
 				}
 			}
