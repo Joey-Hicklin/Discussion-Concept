@@ -6,10 +6,16 @@ require "inc/requires.inc.php";
 <?php 
 	if (isset($_GET['rT'])){
 		$_SESSION['rT'] = $_GET['rT'];
-	}
+	} 
+	// else{
+	// 	unset($_SESSION['rT']);
+	// }
 	if (isset($_GET['id'])){
 		$_SESSION['id'] = $_GET['id'];
-	}
+	} 
+	// else{
+	// 	unset($_SESSION['id']);
+	// }
  ?>
 <div class="respondSubjectBox">
 	<div class="respondSubjectButton">View Topic</div>

@@ -68,7 +68,6 @@ require "inc/requires.inc.php";
 	</div>
 	<div class="sidebarConfirmBox">
 		<div class="sidebarConfirmCLButton sidebarConfirmButton">Search <br>Current Layer</div>
-		<div class="sidebarConfirmMTButton sidebarConfirmButton">Search <br>Main Topic</div>
 		<div class="sidebarConfirmRButton sidebarConfirmButton">Reset Search Changes</div>
 	</div>
 </div>

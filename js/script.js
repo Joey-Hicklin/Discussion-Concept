@@ -1,3 +1,50 @@
+function setPostTimer(animateDone){
+	lastPost = Date.parse(data.lastPost) - Date.now()+(0.2*60*1000);
+
+	if (loggedIn == 1 && lastPost > 0.05){
+
+		if (((lastPost/1000) % 60) < 5){
+			animateTimer(postTimer, "READY TO POST!", animateDone);
+			console.log(animateDone);
+		}
+
+		if ((lastPost/1000/60 << 0) < 10){
+			postMin = String((lastPost/1000/60 << 0).pad(2));
+		} else{
+			postMin = String((lastPost/1000/60 << 0));
+		}
+
+		if (((lastPost/1000) % 60) < 10){
+			postSec = String((Math.round((lastPost/1000) % 60)).pad(2));
+		} else{
+			postSec = String((Math.round((lastPost/1000) % 60)));
+		}
+
+		postTimer.html(postMin+":"+postSec);
+
+
+	} else if (loggedIn == 1) {
+		if (typeof postInterval !== 'undefined'){
+			window.clearInterval(postInterval);
+			animateDone = false;
+			// set html to "Respond Ready!"
+			// add class that gives new style
+		}
+		console.log("Post timer is up!");
+		postTimer.html("00:00");
+	} else{
+
+	}
+}
+
+function AAA(){
+	lastPost = Date.now()+11000;
+	animateDone = false;
+	return lastPost, animateDone;
+}
+Number.prototype.pad = function(n) {
+    return new Array(n).join('0').slice((n || 2) * -1) + this;
+}
 jQuery(function($) {
 	function menuToggle(e, f) {	// declare your click variable and its class-swapping parent
 		$(e).on('click', function(g) {	// when the click variable is clicked... 
@@ -33,6 +80,13 @@ jQuery(function($) {
  $(document).ready(function(){
 
 	menuToggle($('.sidebarTab'),$('.sidebarBox'));
+	layerObjects = [0];
+	$('#mainLayer').click(function(event) {
+		window.location = "main_topic.php";
+	});
+	if (window.location.pathname.indexOf("view")>-1){
+		$('#mainLayer').css('display', 'inline-block');
+	}
 
 
  ///////////////////////////////////////////////  AJAX   ///////////////////////////////////////////
@@ -44,10 +98,35 @@ jQuery(function($) {
 			dataType: 'JSON'
 		}).done(function(data,success){
 			console.log(data);
-			var loggedIn = data.login;
-			if (window.location.pathname.indexOf("respond")>-1){
+			loggedIn = data.login;
+
+			lastMain = Date.parse(data.lastMain)-Date.now()+(48*60*60*1000);
+			lastPost = Date.parse(data.lastPost)-Date.now()+(0.2*60*1000);
+			currentTime = Date.now();
+			postTimer = $('.postTimer');
+
+			function animateTimer(element, newHTML, animateDone){
+				if (animateDone = false){
+					element.animate({"color":"rgba(#FF0000,0.2)"},4000,function() {
+						element.addClass('postTimerReady').delay(1000);
+						element.html(newHTML);
+					});
+					animateDone = true;
+					console.log("animated!");
+				}
+			}
+
+			////////////HERE
+			if (loggedIn == 1 && lastPost > 0.998){
+				postInterval = setInterval(setPostTimer(animateDone),1000);
+				animateDone = false;
+			}
+			
+			if (window.location.pathname.indexOf("respond")>-1){ // if on respond page, retrieve data from GET  ----// node
+
 				var rT = data.rT; // rT = Response Type (Main Topic, Post or Statement)
 				var rS = data.rS; // rS = Response Style (Agree, Neutral, Disagree)
+				var ID = data.id; // ID of content being responded to
 			}
 			// function respondInfo(rT, ID){
 			// 	var jqxhr = $.ajax({
@@ -67,13 +146,13 @@ jQuery(function($) {
 			// 	});
 				
 			// }
-			function sendPostData(rS,rT,postContent){
+			function sendPostData(postContent){
 				var jqxhr = $.ajax({
 					url: "newPost.php",
 					method: 'POST',
-					data: {'rT':rT,'rS':rS,"postContent":postContent}
+					data: {"postContent":postContent}
 				}).done(function(data,success){
-					// console.log(data);
+					console.log(data);
 					window.onbeforeunload = null;
 					switch (rT){
 						case 'mT':
@@ -81,6 +160,15 @@ jQuery(function($) {
 							break;
 						case 'P':
 							window.location = "main_topic.php";
+
+							// revert page back to previous view state (http://bit.ly/1TciLg3)
+							// use pushState() ---- (http://bit.ly/27n1U0p)
+							// possibly send ?hash? data through GET statement
+
+							// When a human writes code, they are inscribing their intelligence into a machine.
+
+							// rewrite all view processes through GET statements, resending the page info
+
 							break;
 						case 'S':
 							window.location = "main_topic.php";
@@ -88,11 +176,13 @@ jQuery(function($) {
 					}
 				});
 			}
-			function sendViewData($view, $viewIn, $sortA, $displayN, $layerT){
+			function sendViewData(view, viewIn, sortA, displayN, layerType, layerID){
+				layerType = layerType || "N"; // "POST" for post, "STATEMENT" for statement, "N" for neither
+				layerID = layerID || "N"; // "N" if ID is not set
 				var jqxhr = $.ajax({
 					url: "view_content.php",
 					method: 'POST',
-					data: {'V':$view,'VI':$viewIn,'S':$sortA,'D':$displayN,'L':$layerT}
+					data: {'V':view,'VI':viewIn,'S':sortA,'D':displayN,'LT':layerType,'LID':layerID}
 				}).done(function(data,success){
 
 				 ///////////////////////////////////   VIEW CONTENT   ////////////////////////////////////
@@ -106,66 +196,172 @@ jQuery(function($) {
 						"border-bottom":"none"
 					});
 
-				        /////////////////////////////   CREATE LAYER   ////////////////////////
+				     //////////////////////////////////////////   THREE BUTTONS   ////////////////////////////////////////
 
+					function viewLayer(view, viewIn, sortA, displayN, layerType, type, clickID){
+						$('.blackout').hide();
 
-					$('.statementViewButton').click(function(event) {
-				 		statementID = $(this).parents('.statement').find('.statementID').html();
-				 		statementContent = $(this).parents('.statement').find('.statementContent span').html();
-
-				 		nL = $('.originalLayer').clone(true, true);
+						nL = $('.originalLayer').clone(true, true);
 				 		nL.html($('.layerButton').length);
 				 		nL.removeClass('originalLayer');
 				 		$('.layerButton:last').after(nL);
 
-				 		cB = $('.layerButton:last');
-				 		$('<div>').addClass('layerID').html(statementID).appendTo(cB);
-				 		$('<div>').addClass('layerContent').html(statementContent).appendTo(cB);
+				 		layerObjects.push( {"layerID":clickID, "layerContent":$('.respondTopic').html(), "layerType":type} );
+
+				 		sendViewData(view, viewIn, sortA, displayN, layerType, clickID);
+					}
 
 
-				 	});
+					    function threeButtons(clickedButton, view, viewIn, sortA, displayN, layerType){
+					    	$(clickedButton).click(function(event) {
 
-					    /////////////////////////   RESPOND BUTTON   ///////////////////////////
+					    		if (clickedButton.search("post") > -1){ //-----------------// get type
+					    			type = clickedButton.substring(1,5); //               /
+					    		} else if (clickedButton.search("statement") > -1){ //   /
+					    			type = clickedButton.substring(1,10); //            /
+					    		}
 
-					    $('.statementRespondButton').click(function(event) {
-					    	ID = $(this).closest('.statement').find('.statementID').html();
-					    	content = $(this).closest('.statementContentBox').find('.statementContent span').html();
-					    	$('.respondBlackout').show();
-					    	$('.respondBlackout').find('.respondTopic').html(content);
-					    	$('.respondTopic').css({
-					    		"font-size": '2.5vw'
-					    	});
-					    	$('.agreeButton').click(function(event) {
-					    		window.location = 'respond.php?rS=0&rT=S&id='+ID;
-					    	});
-					    	$('.neutralButton').click(function(event) {
-					    		window.location = 'respond.php?rS=1&rT=S&id='+ID;
-					    	});
-					    	$('.disagreeButton').click(function(event) {
-					    		window.location = 'respond.php?rS=2&rT=S&id='+ID;
-					    	});
-					    });
+						    	clickID = $(this).closest("."+type).find("."+type+"ID").html(); // get the ID of the clicked element
 
-					    $('.postRespondButton').click(function(event) {
-					    	ID = $(this).closest('.post').find('.postID').html();
-					    	$('.respondBlackout').show();
-					    	$('.respondBlackout').find('.respondTopic').html("");
-					    	$(this).closest('.post').find('.statement').each(function(index, el) {
-					    		$('<p>').html($(this).find('.statementContent span').html()).appendTo($('.respondBlackout').find('.respondTopic'));
-					    	});
-					    	$('.respondTopic').css({
-					    		"font-size": '2.5vw'
-					    	});
-					    	$('.agreeButton').click(function(event) {
-					    		window.location = 'respond.php?rS=0&rT=P&id='+ID;
-					    	});
-					    	$('.neutralButton').click(function(event) {
-					    		window.location = 'respond.php?rS=1&rT=P&id='+ID;
-					    	});
-					    	$('.disagreeButton').click(function(event) {
-					    		window.location = 'respond.php?rS=2&rT=P&id='+ID;
-					    	});
-					    });
+						    	if (clickedButton.search("Respond") > -1){ //--------------------// set words for title and buttons
+						    		$('.viewNum').hide();
+					    			$('.respondBox span').html("Respond In:"); //               /
+					    			$('.agreeButton .threeButtonText').html("AGREEMENT"); //                    /
+					    			$('.neutralButton .threeButtonText').html("NEUTRALITY"); //                /
+					    			$('.disagreeButton .threeButtonText').html("DISAGREEMENT"); //            /
+
+					    		} else if (clickedButton.search("View") > -1){ //             /
+					    			$('.respondBox span').html("View Responses In:"); //     /
+					    			$('.agreeButton .threeButtonText').html("AGREEMENT"); //                /
+					    			$('.neutralButton .threeButtonText').html("NEUTRALITY"); //            /
+					    			$('.disagreeButton .threeButtonText').html("DISAGREEMENT"); //        /
+
+					    			if (type == "post"){
+							 			layerType = "POST";
+							 		} else if (type == "statement"){
+							 			layerType = "STATEMENT";
+							 		}
+							 		function viewNum(layerType, clickID, affiliation){
+						    			$.ajax({
+						    				url: 'viewNum.php',
+						    				type: 'POST',
+						    				dataType: 'JSON',
+						    				data: {
+						    					"type": layerType,
+						    					"id": clickID,
+						    					"aff": affiliation
+						    				}
+						    			})
+						    			.done(function(data, success) {
+						    				switch(affiliation){
+						    					case 0:
+						    					$('.viewNumA').html(data);
+						    					break;
+
+						    					case 1:
+						    					$('.viewNumN').html(data);
+						    					break;
+
+						    					case 2:
+						    					$('.viewNumD').html(data);
+						    					break;
+						    				}
+						    			});
+						    		}
+						    		viewNum(layerType, clickID, 0);
+						    		viewNum(layerType, clickID, 1);
+						    		viewNum(layerType, clickID, 2);
+						    		$('.viewNum').css("display","inline-block");
+					    			
+
+					    		} else if (clickedButton.search("Rate") > -1){
+					    			$('.viewNum').hide();
+					    			$('.respondBox span').html("This "+type.charAt(0).toUpperCase()+type.slice(1)+" is:");
+					    			$('.agreeButton .threeButtonText').html("WELL SPOKEN");
+					    			$('.neutralButton .threeButtonText').html("NOT HELPFUL");
+					    			$('.disagreeButton .threeButtonText').html("RUDE/INSULTING");
+					    		}
+
+						    	$('.respondBlackout').show();
+
+						    	$('.respondBlackout').find('.respondTopic').html(""); // clear the topic content
+
+						    	if (type == "post"){
+						    		$(this).closest('.post').find('.statement').each(function(index, el) {
+							    		$('<p>').html($(this).find('.statementContent span').html()).appendTo($('.respondBlackout').find('.respondTopic'));
+							    	});
+							    	typeShort = "P";
+						    	} else{
+						    		$('.respondBlackout').find('.respondTopic').html($(this).closest('.statementContentBox').find('.statementContent span').html());
+						    		typeShort = "S";
+						    	}
+
+						    	$('.respondTopic').css({
+						    		"font-size": '2.5vw'
+						    	});
+
+						    	///////////////////////////////////////////////   CLICK STATES   ////////////////////////////////////
+
+
+						    	$('.agreeButton').off("click");
+						    	$('.agreeButton').click(function(event) { //--------------------------------// GREEN BUTTON CLICK
+
+						    		if (clickedButton.search("Respond") > -1){
+						    			window.location = 'respond.php?rS=0&rT='+typeShort+'&id='+clickID;
+
+						    		} else if (clickedButton.search("View") > -1){
+						    			viewIn = 0;
+						    			viewLayer(view, viewIn, sortA, displayN, layerType, type, clickID);
+						    			$('#sidebarIn option').removeAttr('selected');
+						    			$('#sidebarIn option:nth-child(1)').attr('selected', 'selected');
+
+						    		} else if (clickedButton.search("Rate") > -1){
+
+						    		}
+						    	});
+
+						    	$('.neutralButton').off("click");
+						    	$('.neutralButton').click(function(event) { //--------------------------------// BLUE BUTTON CLICK
+
+						    		if (clickedButton.search("Respond") > -1){
+						    			window.location = 'respond.php?rS=1&rT='+typeShort+'&id='+clickID;
+
+						    		} else if (clickedButton.search("View") > -1){
+						    			viewIn = 1;
+						    			viewLayer(view, viewIn, sortA, displayN, layerType, type, clickID);
+						    			$('#sidebarIn option').removeAttr('selected');
+						    			$('#sidebarIn option:nth-child(2)').attr('selected', 'selected');
+
+						    		} else if (clickedButton.search("Rate") > -1){
+
+						    		}
+						    	});
+
+						    	$('.disagreeButton').off("click");
+						    	$('.disagreeButton').click(function(event) { //--------------------------------// RED BUTTON CLICK
+
+						    		if (clickedButton.search("Respond") > -1){
+						    			window.location = 'respond.php?rS=2&rT='+typeShort+'&id='+clickID;
+
+						    		} else if (clickedButton.search("View") > -1){
+						    			viewIn = 2;
+						    			viewLayer(view, viewIn, sortA, displayN, layerType, type, clickID);
+						    			$('#sidebarIn option').removeAttr('selected');
+						    			$('#sidebarIn option:nth-child(3)').attr('selected', 'selected');
+
+						    		} else if (clickedButton.search("Rate") > -1){
+
+						    		}
+						    	});
+						    });
+					    }
+					    threeButtons('.postRespondButton', view, viewIn, sortA, displayN, layerType);
+					    threeButtons('.postRateButton', view, viewIn, sortA, displayN, layerType);
+					    threeButtons('.postViewButton', view, viewIn, sortA, displayN, layerType);
+					    threeButtons('.statementRespondButton', view, viewIn, sortA, displayN, layerType);
+					    threeButtons('.statementRateButton', view, viewIn, sortA, displayN, layerType);
+					    threeButtons('.statementViewButton', view, viewIn, sortA, displayN, layerType);
+
 
 						////////////////////////   POST SLIDE DISPLAY   ////////////////////////
 
@@ -207,24 +403,78 @@ jQuery(function($) {
 		 		window.location = "sign_up.php";
 		 	});
 
+		 	///////////////   LAYER BUTTON CLICK   /////////////////
+
+
+		 	function checkLayerButtons(element){
+	 			if (element == 1){
+		 			$('.layerNavPrev').hide();
+		 		} else{
+		 			$('.layerNavPrev').show();
+		 		}
+		 		if (element == ($('.layerButton').length - 1)) {
+		 			$('.layerNavNext').hide();
+		 		} else{
+		 			$('.layerNavNext').show();
+		 		}
+	 		}
+
+		 	$('.layerButton').click(function(event) {
+		 		thisLayerText = parseInt($(this).text());
+		 		$('.layerBlackout .layerContent').html(layerObjects[thisLayerText].layerContent);
+
+		 		
+
+		 		checkLayerButtons(thisLayerText);
+
+		 		$('.layerBlackout').show();
+		 	});
+		 	$('.layerNavGo').click(function(event) {
+		 		view = ($('#sidebarView').val());  ///// set variables for sidebar selections
+			 	viewIn = ($('#sidebarIn').val()); /////
+			 	sortA = ($('#sortAmount').val()); /////
+			 	displayN = ($('#displayNum').val()); //
+	 			sendViewData(view, viewIn, sortA, displayN, layerObjects[thisLayerText].layerType, layerObjects[thisLayerText].layerID);
+	 			removeCount = $('.layerButton').length;
+	 			for (var i = thisLayerText+1; i < removeCount; i++) {
+	 				console.log(i);
+	 				$('.layerButton:last').remove();
+	 			}
+	 			spliceNum1 = thisLayerText+1;
+	 			spliceNum2 = layerObjects.length-thisLayerText+1;
+	 			layerObjects.splice(spliceNum1,spliceNum2);
+	 			$('.layerBlackout').hide();
+	 		});
+
+	 		$('.layerNavPrev').click(function(event) {
+	 			thisLayerText-=1;
+	 			$('.layerBlackout .layerContent').html(layerObjects[thisLayerText].layerContent);
+	 			checkLayerButtons(thisLayerText);
+	 		});
+	 		$('.layerNavNext').click(function(event) {
+	 			thisLayerText+=1;
+	 			$('.layerBlackout .layerContent').html(layerObjects[thisLayerText].layerContent);
+	 			checkLayerButtons(thisLayerText);
+	 		});
+
 		 ////////////////////////////////   VIEW SIDEBAR   /////////////////////////////////////////
 
-		 	$view = ($('#sidebarView').val());  ///// set variables for sidebar selections
-		 	$viewIn = ($('#sidebarIn').val()); /////
-		 	$sortA = ($('#sortAmount').val()); /////
-		 	$displayN = ($('#displayNum').val()); //
+		 	view = ($('#sidebarView').val());  ///// set variables for sidebar selections
+		 	viewIn = ($('#sidebarIn').val()); /////
+		 	sortA = ($('#sortAmount').val()); /////
+		 	displayN = ($('#displayNum').val()); //
 
-		 	$reset = 0; // start sensing for changes in selection
+		 	reset = 0; // start sensing for changes in selection
 
 		 	$('select').change(function(event) {
 
-		 		if ($reset == 0){ // if this is the first change
+		 		if (reset == 0){ // if this is the first change
 
-		 			$reset = 1; // note that it is the first change
-		 			$Rview = ($('#sidebarView').val()); ////// set reset return values
-				 	$RviewIn = ($('#sidebarIn').val()); /////
-				 	$RsortA = ($('#sortAmount').val()); /////
-				 	$RdisplayN = ($('#displayNum').val()); //
+		 			reset = 1; // note that it is the first change
+		 			Rview = ($('#sidebarView').val()); ////// set reset return values
+				 	RviewIn = ($('#sidebarIn').val()); /////
+				 	RsortA = ($('#sortAmount').val()); /////
+				 	RdisplayN = ($('#displayNum').val()); //
 		 		}
 
 		 		$('.sidebarShowing').hide(); // hide the display page results
@@ -234,25 +484,15 @@ jQuery(function($) {
 
 
 		 	$('.sidebarConfirmCLButton').click(function(event) {
-		 		$layerT = 0; //---------------------------// save selection for database query
-		 		$view = ($('#sidebarView').val()); //// collect current selections
-			 	$viewIn = ($('#sidebarIn').val()); ///
-			 	$sortA = ($('#sortAmount').val()); ////
-			 	$displayN = ($('#displayNum').val()); //
+		 		view = ($('#sidebarView').val()); //----------------// collect current selections
+			 	viewIn = ($('#sidebarIn').val()); //----------------//
+			 	sortA = ($('#sortAmount').val()); //----------------//
+			 	displayN = ($('#displayNum').val()); //----------------//
+			 	layerType = layerObjects[layerObjects.length-1].layerType; //
+			 	layerID = layerObjects[layerObjects.length-1].layerID; //-//
 			 	$('.sidebarConfirmBox').hide(); // hide 3 buttons
 		 		$('.sidebarShowing').show(); // show display page results
-		 		sendViewData($view, $viewIn, $sortA, $displayN, $layerT); // send query to PHP
-		 	});
-
-		 	$('.sidebarConfirmMTButton').click(function(event) {
-		 		$layerT = 1; //-------------------// save selection for database query
-		 		$view = ($('#sidebarView').val()); //// collect current selections
-			 	$viewIn = ($('#sidebarIn').val()); ///
-			 	$sortA = ($('#sortAmount').val()); ////
-			 	$displayN = ($('#displayNum').val()); //
-		 		$('.sidebarConfirmBox').hide(); // hide 3 buttons
-		 		$('.sidebarShowing').show(); // show display page results
-		 		sendViewData($view, $viewIn, $sortA, $displayN, $layerT); // send query to PHP
+		 		sendViewData(view, viewIn, sortA, displayN, layerType, layerID); // send query to PHP
 		 	});
 
 		 ////////////////////////////////////   STATEMENT CLONER   ////////////////////////////////
@@ -284,7 +524,7 @@ jQuery(function($) {
 		 /////////////////////////   REVIEW RESPONSE STATEMENTS   ///////////////////////////////////
 
 		 	$('.reviewPostButton').click(function(event) {
-		 		var respondStatements = this.form.elements['statements[]'];
+		 		respondStatements = this.form.elements['statements[]'];
 		 		$('.blackout').hide();
 		 		$('.reviewContent').html('').css({
 		 			"font-size":"2vw",
@@ -303,22 +543,21 @@ jQuery(function($) {
 		 		$('.reviewContent').show();
 		 		$('.viewTopic').hide();
 		 		$('.viewTopicBlackout').show();
-
-		 		$('.submitPost').click(function(event) {
-			 		var postContent = "";
-			 		if (respondStatements.length == null){  // If there is only 1 statement, it is not an array
-			 			postContent = respondStatements.value;
-			 		} else {
-				 		for (var i = 0; i < respondStatements.length; i++) {
-				 			if (respondStatements[i].value.length !== 0){
-				 				postContent = postContent.concat(respondStatements[i].value);
-				 				postContent = postContent.concat("~^");
-			 				}
-				 		}
-				 		postContent = postContent.substring(0, postContent.length-2); // Chop off the last ~^ delimiter
-				 	}
-			 		sendPostData(rS,rT,postContent);
-			 	});
+		 	});
+		 	$('.submitPost').click(function(event) {
+		 		var postContent = "";
+		 		if (respondStatements.length == null){  // If there is only 1 statement, it is not an array
+		 			postContent = respondStatements.value;
+		 		} else {
+			 		for (var i = 0; i < respondStatements.length; i++) {
+			 			if (respondStatements[i].value.length !== 0){
+			 				postContent = postContent.concat(respondStatements[i].value);
+			 				postContent = postContent.concat("~^");
+		 				}
+			 		}
+			 		postContent = postContent.substring(0, postContent.length-2); // Chop off the last ~^ delimiter
+			 	}
+		 		sendPostData(postContent);
 		 	});
 
          /////////////////////////////////////////   STYLING   ////////////////////////////////////////////
@@ -374,6 +613,16 @@ jQuery(function($) {
 				$('.logInButton').hide();
 				$('.mainRespondButton').click(function(event) {
 					$('.respondBlackout').show();
+					$('.respondBlackout').find('.respondTopic').html($('.mainTopicFront').html());
+					$('.agreeButton').click(function(event) {
+			    		window.location = 'respond.php?rS=0&rT=mT';
+			    	});
+			    	$('.neutralButton').click(function(event) {
+			    		window.location = 'respond.php?rS=1&rT=mT';
+			    	});
+			    	$('.disagreeButton').click(function(event) {
+			    		window.location = 'respond.php?rS=2&rT=mT';
+			    	});
 				});
 			}
 
@@ -405,13 +654,20 @@ jQuery(function($) {
 			$('.viewTopicBox').click(function(event) {
 				event.stopPropagation();
 			});
+			$('.layerBox').click(function(event) {
+				event.stopPropagation();
+			});
 
 			/////////////// DEFAULT LANDING ON VIEW PAGE ////////////////////////
 			if (window.location.pathname.indexOf("view")>-1){
 				$layerT = 1;
-				$('#view_content').html(sendViewData($view, $viewIn, $sortA, $displayN, $layerT));
+				$('#view_content').html(sendViewData(view, viewIn, sortA, displayN));
 			}
-		}); // end of .done function
+		})//; // end of .done function
+		.fail(function(a){ // getData error reporting
+			console.log("error");
+			console.log(a);
+		});
 	} // end of getData function
 	getData();
 }); // document ready end

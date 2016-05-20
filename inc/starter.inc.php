@@ -7,7 +7,6 @@ if (!isset($_SESSION['workingPage'])){
 } elseif (strpos($_SERVER['REQUEST_URI'], 'sign_up') === false  && strpos($_SERVER['REQUEST_URI'], 'api') === false){
 		$_SESSION['workingPage'] = $_SERVER['REQUEST_URI'];
 }
-
 // set logged out cookie by default
 if (!isset($_COOKIE['loggedIn'])){
 	setcookie('loggedIn',0,time()+86400*30);

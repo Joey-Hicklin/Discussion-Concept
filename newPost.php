@@ -3,21 +3,23 @@ require "inc/connection.inc.php";
 session_start();
 $userID = $db->query("SELECT ID FROM user WHERE EMAIL='".$_COOKIE['email']."'")->fetch_row()[0];
 $mainID = $db->query("SELECT ID FROM main_topic WHERE QUEUE_NUM='0'")->fetch_row()[0];
-$replyID = "";
-switch ($_POST['rT']) {
+switch ($_SESSION['rT']) {
 	case 'P':
-		$replyOf = ", 'REPLY_POST'";
+		$replyOf = ", REPLY_POST";
+		$replyID = ",'".$_SESSION['id']."'";
 		break;
 	
 	case 'S':
-		$replyOf = ", 'REPLY_STATEMENT'";
+		$replyOf = ", REPLY_STATEMENT";
+		$replyID = ",'".$_SESSION['id']."'";
 		break;
 
 	default:
 		$replyOf = "";
+		$replyID = "";
 }
 ////////   SEND DATA TO post TABLE   /////////////////
-if($db->query("INSERT INTO post (USER_ID, MAIN_ID, AFFILIATION".$replyOf.") VALUES ('".$userID."','".$mainID."','".$_POST['rS']."'".$replyID.")")) {
+if($db->query("INSERT INTO post (USER_ID, MAIN_ID, AFFILIATION".$replyOf.") VALUES ('".$userID."','".$mainID."','".$_SESSION['rS']."'".$replyID.")")) {
 	echo "POST LINK SUCCESS!!";
 	$postID = $db->query("SELECT LAST_INSERT_ID()")->fetch_row()[0];
 	

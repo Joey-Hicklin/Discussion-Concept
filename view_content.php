@@ -1,6 +1,6 @@
 <?php 
 require "inc/connection.inc.php";
-function statement($content, $statementID){ ?>
+function statement($db, $content, $statementID){ ?>
 	<div class="statement"><!--
 		--><div class="statementID"><?php echo $statementID; ?></div><!--
 		--><div class="statementRatingSpace"><!--
@@ -15,8 +15,9 @@ function statement($content, $statementID){ ?>
 			<div class="statementBlackout">
 				<div class="statementRateButton statementButton">RATE</div>
 				<div class="statementViewButton statementButton">VIEW
-					<div class="statementResponseNum">3</div>
+					<div class="statementResponseNum"><?php echo $db->query("SELECT post.ID FROM post WHERE REPLY_STATEMENT='".$statementID."'")->num_rows; ?></div>
 				</div><!--END OF statementView DIV-->
+				<!--("SELECT post.ID FROM post WHERE REPLY_STATEMENT='".$statementID."'")->num_rows)-->
 				<div class="statementRespondButton statementButton">RESPOND</div>
 			</div><!--END OF statementBlackout DIV-->
 		</div><!--END OF statementContentBox DIV-->
@@ -36,7 +37,7 @@ function post($postID, $db){ ?>
 
 		for ($i=0; $i < $statements->num_rows; $i++) {
 			$statementResponse = $statements->fetch_row();
-			statement($statementResponse[0],$statementResponse[1]);
+			statement($db, $statementResponse[0],$statementResponse[1]);
 			}		
 	 ?>
 	<div class="postRatingBox"><!--
@@ -46,7 +47,7 @@ function post($postID, $db){ ?>
 	--></div><!--END OF postRatingBox DIV-->
 	<div class="postRateButton postButton">RATE</div>
 	<div class="postViewButton postButton">VIEW
-		<div class="postResponseNum">1</div>
+		<div class="postResponseNum"><?php echo $db->query("SELECT post.ID FROM post WHERE REPLY_POST='".$postID."'")->num_rows; ?></div>
 	</div><!--END OF postView DIV-->
 	<div class="postRespondButton postButton">RESPOND</div>
 	<div class="postReadMore">Read More...</div>
@@ -57,12 +58,20 @@ function post($postID, $db){ ?>
 ///////////   DISPLAY MACHINE   //////////////////
 
 
+$query = "SELECT post.ID FROM post";
+
 if ($_SERVER['REQUEST_METHOD'] == 'POST'){
 	$V = $_POST['V'];  // view
 	$VI = $_POST['VI']; // view In
 	$S = $_POST['S']; // sort
 	$D = $_POST['D']; // display num
-	$L = $_POST['L']; // layer topic
+
+	if ($_POST['LT'] !== "N"){
+		$query .= " WHERE post.REPLY_".$_POST['LT']."='".$_POST['LID']."'";
+	} else{
+		$query .=  " JOIN main_topic ON post.MAIN_ID = main_topic.ID WHERE main_topic.QUEUE_NUM = '0' AND post.REPLY_POST IS NULL AND post.REPLY_STATEMENT IS NULL";
+	}
+
 } else {
 
 	//DEFAULTS
@@ -70,7 +79,8 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST'){
 	$VI = 0; // agreement
 	$S = "H"; // highest rating
 	$D = 5;
-	$L = 1; // 1=mT, 0=sub topic
+
+	$query .=  " JOIN main_topic ON post.MAIN_ID = main_topic.ID WHERE main_topic.QUEUE_NUM = '0' AND post.REPLY_POST IS NULL AND post.REPLY_STATEMENT IS NULL";
 }
 
 											// POSTS or STATEMENTS
@@ -93,7 +103,8 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST'){
 // }
 ?>
 <?php
-$query = "SELECT post.ID FROM post JOIN main_topic ON post.MAIN_ID = main_topic.ID WHERE main_topic.QUEUE_NUM = '0' AND post.AFFILIATION = '$VI'";
+$query .= " AND post.AFFILIATION = '$VI'";
+// $query = "SELECT post.ID FROM post JOIN main_topic ON post.MAIN_ID = main_topic.ID WHERE main_topic.QUEUE_NUM = '0' AND post.AFFILIATION = '$VI'";
 $response = $db->query($query);
 ?>
 

@@ -26,10 +26,10 @@
 			<div class="respondTopic"></div>
 		</div>
 		<div class="respondBox">
-			<span>Respond in:</span>
-			<div onclick="window.location = 'respond.php?rS=0'" class="agreeButton respondInButton">AGREEMENT</div>
-			<div onclick="window.location = 'respond.php?rS=1'" class="neutralButton respondInButton">NEUTRALITY</div>
-			<div onclick="window.location = 'respond.php?rS=2'" class="disagreeButton respondInButton">DISAGREEMENT</div>
+			<span></span>
+			<div class="agreeButton respondInButton"><div class="viewNum viewNumA">8</div><div class="threeButtonText">AGREEMENT</div></div>
+			<div class="neutralButton respondInButton"><div class="viewNum viewNumN">8</div><div class="threeButtonText">NEUTRALITY</div></div>
+			<div class="disagreeButton respondInButton"><div class="viewNum viewNumD">8</div><div class="threeButtonText">DISAGREEMENT</div></div>
 		</div><!--END OF respondBox DIV-->
 	</div><!--END OF respondBlackout DIV-->
 
@@ -42,7 +42,7 @@
 
 			if (strpos($_SERVER['REQUEST_URI'], 'respond')){
 
-				if (!isset($_GET['rT'])){
+				if ($_GET['rT'] == "mT"){
 					echo ($db->query("SELECT TOPIC FROM main_topic WHERE QUEUE_NUM='0'")->fetch_row()[0]);
 				} elseif ($_GET['rT'] == "P"){
 					$respondViewPost = $db->query("SELECT CONTENT FROM statement WHERE statement.POST_ID='".$_GET['id']."'");
@@ -56,22 +56,22 @@
 			?></div>
 			<div class="reviewContent"></div>
 			
-			<div class="submitPost">SubmitPost</div>
+			<div class="submitPost">Submit Post</div>
 		</div><!--END OF viewTopicBox DIV-->
 	</div><!--END OF viewTopicBlackout DIV-->
 
-	<div class="rateBlackout blackout">
+	<!-- <div class="rateBlackout blackout">
 		<div class="rateContent">There is no way I'd ever get to 350 characters with one simple statement. Even if I tried to make multiple points, referencing multiple places with all kinds of varying information. The possibility of 350 characters is actually quite vast when you consider the total ability that you have with the limit. For example, there are 350 characters here...</div>
 		<div class="rateRatingBox">
 			<div class="rateRatingGreen rateRatingButton">Well Spoken</div>
 			<div class="rateRatingBlue rateRatingButton">Not Helpful</div>
 			<div class="rateRatingRed rateRatingButton">Rude/Insulting</div>
 		</div>
-	</div>
+	</div> -->
 
 	<div class="layerBlackout blackout">
 		<div class="layerBox">
-			<div class="layerContent">There is no way I'd ever get to 350 characters with one simple statement. Even if I tried to make multiple points, referencing multiple places with all kinds of varying information. The possibility of 350 characters is actually quite vast when you consider the total ability that you have with the limit. For example, there are 350 characters here...</div>
+			<div class="layerContent"></div>
 			<div class="layerNavBox">
 				<div class="layerNavPrev layerNavButton"><span>&#x25B2;</span></div>
 				<div class="layerNavGo layerNavButton">Go To Layer</div>
