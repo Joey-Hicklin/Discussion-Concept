@@ -72,6 +72,7 @@ body{
 	}
 	.mainTopicTimer{
 		margin-left: 1vw;
+		width: 7.7vw;
 	}
 	.postTimer{
 		width: 5.4vw;
@@ -80,7 +81,10 @@ body{
 		background-color: $green;
 		color: black!important;
 		border: 0.1vw solid black!important;
-		width: 14.5vw;
+		width: 5vw;
+	}
+	.postTimerReady:hover{
+		cursor: context-menu;
 	}
 	.rateTimer{
 
