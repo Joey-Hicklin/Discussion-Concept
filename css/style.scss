@@ -61,7 +61,7 @@ body{
 		background-color: black;
 		border: 0.1vw solid white;
 		border-radius: 0.7vw;
-		color: red;
+		color: rgba(255,0,0,1);
 		font-family: Orbitron, sans-serif;
 		font-size: 1.5vw;
 		top: 50%;
@@ -74,7 +74,13 @@ body{
 		margin-left: 1vw;
 	}
 	.postTimer{
-
+		width: 5.4vw;
+	}
+	.postTimerReady{
+		background-color: $green;
+		color: black!important;
+		border: 0.1vw solid black!important;
+		width: 14.5vw;
 	}
 	.rateTimer{
 

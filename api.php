@@ -25,7 +25,9 @@ if (strpos($_SESSION['workingPage'], 'respond')){
 if ($_COOKIE['loggedIn'] == 1){
 	$email = $_COOKIE['email'];
 	$lastMain = $db->query("SELECT post.DATETIME FROM post INNER JOIN user ON user.ID=post.USER_ID WHERE user.EMAIL='$email' AND (post.REPLY_POST IS NULL AND post.REPLY_STATEMENT IS NULL) ORDER BY DATETIME DESC LIMIT 1")->fetch_row()[0];
-	$lastPost = $db->query("SELECT post.DATETIME FROM post INNER JOIN user ON user.ID=post.USER_ID WHERE user.EMAIL='$email' AND (post.REPLY_POST IS NOT NULL OR post.REPLY_STATEMENT IS NOT NULL) ORDER BY DATETIME DESC LIMIT 1")->fetch_row()[0];
+
+	$lastPost = $db->query("SELECT post.DATETIME FROM post INNER JOIN user ON user.ID=post.USER_ID WHERE user.EMAIL='$email' ORDER BY DATETIME DESC LIMIT 1")->fetch_row()[0];
+
 	$data = eD($data, '"lastMain":"'.$lastMain.'","lastPost":"'.$lastPost.'"');
 }
 
